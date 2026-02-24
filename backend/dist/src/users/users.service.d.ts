@@ -1,12 +1,13 @@
 import { PrismaService } from '../prisma/prisma.service';
-import { User, UserRole } from '@prisma/client';
+import { Admin } from '@prisma/client';
 export declare class UsersService {
     private readonly prisma;
     constructor(prisma: PrismaService);
-    findByEmail(email: string): Promise<User | null>;
+    findByEmail(email: string): Promise<Admin | null>;
     createUser(params: {
         email: string;
         passwordHash: string;
-        role?: UserRole;
-    }): Promise<User>;
+        name?: string;
+    }): Promise<Admin>;
+    findById(id: string): Promise<Admin | null>;
 }

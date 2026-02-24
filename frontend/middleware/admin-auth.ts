@@ -1,9 +1,16 @@
+import { useAuthStore } from '~/stores/auth';
+
 export default defineNuxtRouteMiddleware((to) => {
-  const token = useCookie<string | null>('token').value;
+  const authStore = useAuthStore();
+  
+  // Initialize auth from localStorage on client
+  if (import.meta.client) {
+    authStore.initAuth();
+  }
 
   // Allow login page without token
   if (to.path === '/admin/login') {
-    if (token) {
+    if (authStore.isAuthenticated) {
       return navigateTo('/admin/dashboard');
     }
     return;
@@ -11,7 +18,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
   // Protect every /admin route
   if (to.path.startsWith('/admin')) {
-    if (!token) {
+    if (!authStore.isAuthenticated) {
       return navigateTo('/admin/login');
     }
   }

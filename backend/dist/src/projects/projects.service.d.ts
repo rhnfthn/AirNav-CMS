@@ -8,13 +8,13 @@ export declare class ProjectsService {
     list(query: ListProjectsQueryDto): Promise<{
         items: {
             id: string;
-            createdAt: Date;
             title: string;
+            slug: string;
             description: string;
             content: string;
             image: string | null;
             published: boolean;
-            slug: string;
+            createdAt: Date;
             authorId: string;
         }[];
         pagination: {
@@ -24,37 +24,59 @@ export declare class ProjectsService {
             totalPages: number;
         };
     }>;
+    getPublished(): Promise<{
+        id: string;
+        title: string;
+        slug: string;
+        description: string;
+        content: string;
+        image: string | null;
+        published: boolean;
+        createdAt: Date;
+        authorId: string;
+    }[]>;
     getBySlug(slug: string): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
-        slug: string;
+        createdAt: Date;
         authorId: string;
     }>;
-    create(authorId: string, dto: CreateProjectDto): Promise<{
+    getById(id: string): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
+        createdAt: Date;
+        authorId: string;
+    }>;
+    create(dto: CreateProjectDto): Promise<{
+        id: string;
+        title: string;
         slug: string;
+        description: string;
+        content: string;
+        image: string | null;
+        published: boolean;
+        createdAt: Date;
         authorId: string;
     }>;
     update(id: string, dto: UpdateProjectDto): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
-        slug: string;
+        createdAt: Date;
         authorId: string;
     }>;
     remove(id: string): Promise<{

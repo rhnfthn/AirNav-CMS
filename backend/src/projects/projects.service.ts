@@ -35,6 +35,13 @@ export class ProjectsService {
     };
   }
 
+  async getPublished() {
+    return this.prisma.project.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async getBySlug(slug: string) {
     const project = await this.prisma.project.findFirst({
       where: { slug, published: true },
@@ -43,7 +50,13 @@ export class ProjectsService {
     return project;
   }
 
-  async create(authorId: string, dto: CreateProjectDto) {
+  async getById(id: string) {
+    const project = await this.prisma.project.findUnique({ where: { id } });
+    if (!project) throw new NotFoundException('Project not found');
+    return project;
+  }
+
+  async create(dto: CreateProjectDto) {
     const slug = await this.generateUniqueSlug(dto.title);
 
     return this.prisma.project.create({
@@ -52,9 +65,11 @@ export class ProjectsService {
         slug,
         description: dto.description,
         content: dto.content,
-        image: dto.image,
+        techStack: dto.techStack ?? [],
+        githubUrl: dto.githubUrl,
+        liveUrl: dto.liveUrl,
+        coverImage: dto.coverImage,
         published: dto.published ?? false,
-        authorId,
       },
     });
   }
@@ -74,7 +89,10 @@ export class ProjectsService {
         slug,
         description: dto.description,
         content: dto.content,
-        image: dto.image,
+        techStack: dto.techStack,
+        githubUrl: dto.githubUrl,
+        liveUrl: dto.liveUrl,
+        coverImage: dto.coverImage,
         published: dto.published,
       },
     });

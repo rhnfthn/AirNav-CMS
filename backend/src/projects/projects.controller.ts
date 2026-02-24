@@ -10,10 +10,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import {
-  CurrentUser as CurrentUserDecorator,
-  type CurrentUser,
-} from '../auth/decorators/current-user.decorator';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ListProjectsQueryDto } from './dto/list-projects.query.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -28,18 +24,26 @@ export class ProjectsController {
     return this.projectsService.list(query);
   }
 
-  @Get(':slug')
+  @Get('published')
+  getPublished() {
+    return this.projectsService.getPublished();
+  }
+
+  @Get('slug/:slug')
   getBySlug(@Param('slug') slug: string) {
     return this.projectsService.getBySlug(slug);
   }
 
+  @Get(':id')
+  @UseGuards(JwtAuthGuard)
+  getById(@Param('id') id: string) {
+    return this.projectsService.getById(id);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(
-    @CurrentUserDecorator() user: CurrentUser,
-    @Body() dto: CreateProjectDto,
-  ) {
-    return this.projectsService.create(user.userId, dto);
+  create(@Body() dto: CreateProjectDto) {
+    return this.projectsService.create(dto);
   }
 
   @UseGuards(JwtAuthGuard)

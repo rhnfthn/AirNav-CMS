@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectsController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_auth_guard_1 = require("../auth/jwt-auth.guard");
-const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 const create_project_dto_1 = require("./dto/create-project.dto");
 const list_projects_query_dto_1 = require("./dto/list-projects.query.dto");
 const update_project_dto_1 = require("./dto/update-project.dto");
@@ -28,11 +27,17 @@ let ProjectsController = class ProjectsController {
     list(query) {
         return this.projectsService.list(query);
     }
+    getPublished() {
+        return this.projectsService.getPublished();
+    }
     getBySlug(slug) {
         return this.projectsService.getBySlug(slug);
     }
-    create(user, dto) {
-        return this.projectsService.create(user.userId, dto);
+    getById(id) {
+        return this.projectsService.getById(id);
+    }
+    create(dto) {
+        return this.projectsService.create(dto);
     }
     update(id, dto) {
         return this.projectsService.update(id, dto);
@@ -50,19 +55,32 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "list", null);
 __decorate([
-    (0, common_1.Get)(':slug'),
+    (0, common_1.Get)('published'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], ProjectsController.prototype, "getPublished", null);
+__decorate([
+    (0, common_1.Get)('slug/:slug'),
     __param(0, (0, common_1.Param)('slug')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "getBySlug", null);
 __decorate([
+    (0, common_1.Get)(':id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ProjectsController.prototype, "getById", null);
+__decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
-    __param(0, (0, current_user_decorator_1.CurrentUser)()),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, create_project_dto_1.CreateProjectDto]),
+    __metadata("design:paramtypes", [create_project_dto_1.CreateProjectDto]),
     __metadata("design:returntype", void 0)
 ], ProjectsController.prototype, "create", null);
 __decorate([

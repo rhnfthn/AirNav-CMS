@@ -1,27 +1,34 @@
 <template>
   <div>
-    <div>
-      <h1 class="text-2xl font-semibold tracking-tight">New Project</h1>
-      <p class="mt-1 text-sm text-gray-600">Isi detail project dan publish jika sudah siap.</p>
+    <div class="mb-6">
+      <h2 class="text-xl font-semibold text-gray-900">New Project</h2>
+      <p class="text-gray-600">Create a new portfolio project.</p>
     </div>
-    <div class="mt-6 card p-4">
-      <AdminProjectForm submit-label="Create" @submit="onCreate" />
+    <div class="card p-6 max-w-3xl">
+      <AdminProjectForm submit-label="Create Project" :loading="saving" @submit="onCreate" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useToastStore } from '~/stores/toast';
+
 definePageMeta({ layout: 'admin', middleware: 'admin-auth' });
 
-useSeoMeta({
-  title: 'New Project',
-  description: 'Create a new project',
-});
-
 const { apiFetch } = useApiClient();
+const toast = useToastStore();
+const saving = ref(false);
 
 const onCreate = async (payload: any) => {
-  await apiFetch('/projects', { method: 'POST', body: payload });
-  await navigateTo('/admin/projects');
+  saving.value = true;
+  try {
+    await apiFetch('/projects', { method: 'POST', body: payload });
+    toast.success('Project created successfully!');
+    await navigateTo('/admin/projects');
+  } catch (error: any) {
+    toast.error(error?.data?.message || 'Failed to create project');
+  } finally {
+    saving.value = false;
+  }
 };
 </script>

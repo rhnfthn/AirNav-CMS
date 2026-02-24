@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,63 +9,93 @@ datasource db {
   provider = "postgresql"
 }
 
-enum UserRole {
-  ADMIN
-  USER
-}
-
-model User {
-  id        String      @id @default(cuid())
-  email     String      @unique
+// ============== ADMIN ==============
+model Admin {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
   password  String
-  role      UserRole    @default(ADMIN)
-  createdAt DateTime    @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  projects    Project[]
-  blogPosts   BlogPost[]
-  experiences Experience[]
+  @@map("admins")
 }
 
+// ============== ABOUT ==============
+model About {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  photoUrl    String?
+  updatedAt   DateTime @updatedAt
+
+  @@map("about")
+}
+
+// ============== PROJECT ==============
 model Project {
-  id          String   @id @default(cuid())
+  id          String   @id @default(uuid())
   title       String
   slug        String   @unique
-  description String
-  content     String
-  image       String?
+  description String   @db.Text
+  content     String?  @db.Text
+  techStack   String[] @default([])
+  githubUrl   String?
+  liveUrl     String?
+  coverImage  String?
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
 
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
   @@index([published])
   @@index([createdAt])
+  @@map("projects")
 }
 
-model BlogPost {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  content   String
-  published Boolean  @default(false)
-  createdAt DateTime @default(now())
+// ============== CERTIFICATION ==============
+model Certification {
+  id            String  @id @default(uuid())
+  title         String
+  issuer        String
+  year          Int
+  credentialUrl String?
+  imageUrl      String?
 
-  authorId String
-  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
-
-  @@index([published])
-  @@index([createdAt])
+  @@map("certifications")
 }
 
+// ============== EXPERIENCE ==============
 model Experience {
-  id          String    @id @default(cuid())
+  id          String    @id @default(uuid())
   company     String
   position    String
   startDate   DateTime
   endDate     DateTime?
-  description String
+  description String    @db.Text
+  createdAt   DateTime  @default(now())
 
-  authorId String
-  author   User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  @@index([startDate])
+  @@map("experiences")
+}
+
+// ============== TOOLS ==============
+model Tool {
+  id       String  @id @default(uuid())
+  name     String
+  iconUrl  String?
+  category String
+
+  @@map("tools")
+}
+
+// ============== CONTACT MESSAGE ==============
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("contact_messages")
 }

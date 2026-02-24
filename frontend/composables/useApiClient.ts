@@ -1,17 +1,20 @@
+import { useAuthStore } from '~/stores/auth';
+
 type FetchOptions = Parameters<typeof $fetch>[1];
 
 export const useApiClient = () => {
   const config = useRuntimeConfig();
-  const token = useCookie<string | null>('token');
 
   const apiFetch = <T>(path: string, options: FetchOptions = {}) => {
+    const authStore = useAuthStore();
+
     const headers = new Headers(options.headers as HeadersInit | undefined);
-    if (token.value) {
-      headers.set('Authorization', `Bearer ${token.value}`);
+    if (authStore.token) {
+      headers.set('Authorization', `Bearer ${authStore.token}`);
     }
 
     return $fetch<T>(path, {
-      baseURL: config.public.apiBase,
+      baseURL: config.public.apiBase as string,
       ...options,
       headers,
     });

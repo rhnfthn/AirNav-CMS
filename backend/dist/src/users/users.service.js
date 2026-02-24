@@ -12,23 +12,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
-const client_1 = require("@prisma/client");
 let UsersService = class UsersService {
     prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
     findByEmail(email) {
-        return this.prisma.user.findUnique({ where: { email } });
+        return this.prisma.admin.findUnique({ where: { email } });
     }
     createUser(params) {
-        return this.prisma.user.create({
+        return this.prisma.admin.create({
             data: {
                 email: params.email,
                 password: params.passwordHash,
-                role: params.role ?? client_1.UserRole.ADMIN,
+                name: params.name ?? 'Admin',
             },
         });
+    }
+    findById(id) {
+        return this.prisma.admin.findUnique({ where: { id } });
     }
 };
 exports.UsersService = UsersService;

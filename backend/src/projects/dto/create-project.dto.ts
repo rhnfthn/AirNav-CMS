@@ -1,4 +1,4 @@
-import { IsBoolean, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsArray, IsBoolean, IsOptional, IsString, IsUrl, MinLength } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
@@ -9,13 +9,26 @@ export class CreateProjectDto {
   @MinLength(1)
   description!: string;
 
-  @IsString()
-  @MinLength(1)
-  content!: string;
-
   @IsOptional()
   @IsString()
-  image?: string;
+  content?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  techStack?: string[];
+
+  @IsOptional()
+  @IsUrl()
+  githubUrl?: string;
+
+  @IsOptional()
+  @IsUrl()
+  liveUrl?: string;
+
+  @IsOptional()
+  @IsUrl()
+  coverImage?: string;
 
   @IsOptional()
   @IsBoolean()

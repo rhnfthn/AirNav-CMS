@@ -15,7 +15,10 @@ class CreateProjectDto {
     title;
     description;
     content;
-    image;
+    techStack;
+    githubUrl;
+    liveUrl;
+    coverImage;
     published;
 }
 exports.CreateProjectDto = CreateProjectDto;
@@ -30,15 +33,31 @@ __decorate([
     __metadata("design:type", String)
 ], CreateProjectDto.prototype, "description", void 0);
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(1),
     __metadata("design:type", String)
 ], CreateProjectDto.prototype, "content", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsArray)(),
+    (0, class_validator_1.IsString)({ each: true }),
+    __metadata("design:type", Array)
+], CreateProjectDto.prototype, "techStack", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
     __metadata("design:type", String)
-], CreateProjectDto.prototype, "image", void 0);
+], CreateProjectDto.prototype, "githubUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
+], CreateProjectDto.prototype, "liveUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsUrl)(),
+    __metadata("design:type", String)
+], CreateProjectDto.prototype, "coverImage", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsBoolean)(),

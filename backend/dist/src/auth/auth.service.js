@@ -63,11 +63,12 @@ let AuthService = class AuthService {
         const user = await this.usersService.createUser({
             email: dto.email,
             passwordHash,
+            name: dto.name,
         });
         return {
             id: user.id,
             email: user.email,
-            role: user.role,
+            name: user.name,
             createdAt: user.createdAt,
         };
     }
@@ -83,10 +84,26 @@ let AuthService = class AuthService {
         const payload = {
             sub: user.id,
             email: user.email,
-            role: user.role,
+            name: user.name,
         };
         return {
             access_token: await this.jwtService.signAsync(payload),
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+            },
+        };
+    }
+    async getProfile(userId) {
+        const user = await this.usersService.findById(userId);
+        if (!user) {
+            throw new common_1.UnauthorizedException('User not found');
+        }
+        return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
         };
     }
 };

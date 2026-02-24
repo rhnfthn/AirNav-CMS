@@ -1,18 +1,21 @@
 <template>
   <div>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Edit Project</h1>
-        <p class="mt-1 text-sm text-gray-600">Update konten lalu simpan.</p>
+        <h2 class="text-xl font-semibold text-gray-900">Edit Project</h2>
+        <p class="text-gray-600">Update project details.</p>
       </div>
-      <button class="btn-secondary" @click="onDelete">Delete</button>
+      <button class="btn-secondary text-red-600 hover:bg-red-50" @click="onDelete">Delete</button>
     </div>
 
-    <div v-if="pending" class="mt-6 text-sm text-gray-600">Loading...</div>
-    <div v-else class="mt-6 card p-4">
+    <div v-if="loading" class="flex justify-center py-12">
+      <div class="spinner"></div>
+    </div>
+    <div v-else class="card p-6 max-w-3xl">
       <AdminProjectForm
-        :initial="initial"
-        submit-label="Save"
+        :initial="project"
+        submit-label="Save Changes"
+        :loading="saving"
         @submit="onSave"
       />
     </div>
@@ -20,51 +23,52 @@
 </template>
 
 <script setup lang="ts">
+import { useToastStore } from '~/stores/toast';
+
 definePageMeta({ layout: 'admin', middleware: 'admin-auth' });
 
 const route = useRoute();
 const id = computed(() => String(route.params.id));
 const { apiFetch } = useApiClient();
+const toast = useToastStore();
 
-type Project = {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  content: string;
-  image?: string | null;
-  published: boolean;
-};
+const loading = ref(true);
+const saving = ref(false);
+const project = ref<any>(null);
 
-type ListResponse = { items: Project[] };
-
-const { data, pending } = await useAsyncData(
-  () => `admin-project-${id.value}`,
-  async () => {
-    // Backend spec doesn't expose GET /projects/:id, so we fetch list and find.
-    const res = await apiFetch<ListResponse>('/projects', { query: { page: 1, limit: 50 } });
-    const project = res.items.find((p) => p.id === id.value);
-    if (!project) {
-      throw createError({ statusCode: 404, statusMessage: 'Project not found' });
-    }
-    return project;
-  },
-);
-
-const initial = computed(() => data.value);
-
-useSeoMeta(() => ({
-  title: data.value ? `Edit: ${data.value.title}` : 'Edit Project',
-  description: 'Edit project',
-}));
+onMounted(async () => {
+  try {
+    const data = await apiFetch<any>(`/projects/${id.value}`);
+    project.value = data;
+  } catch (error) {
+    toast.error('Project not found');
+    await navigateTo('/admin/projects');
+  } finally {
+    loading.value = false;
+  }
+});
 
 const onSave = async (payload: any) => {
-  await apiFetch(`/projects/${id.value}`, { method: 'PATCH', body: payload });
-  await navigateTo('/admin/projects');
+  saving.value = true;
+  try {
+    await apiFetch(`/projects/${id.value}`, { method: 'PATCH', body: payload });
+    toast.success('Project updated successfully!');
+    await navigateTo('/admin/projects');
+  } catch (error: any) {
+    toast.error(error?.data?.message || 'Failed to update project');
+  } finally {
+    saving.value = false;
+  }
 };
 
 const onDelete = async () => {
-  await apiFetch(`/projects/${id.value}`, { method: 'DELETE' });
-  await navigateTo('/admin/projects');
+  if (!confirm('Are you sure you want to delete this project?')) return;
+  try {
+    await apiFetch(`/projects/${id.value}`, { method: 'DELETE' });
+    toast.success('Project deleted!');
+    await navigateTo('/admin/projects');
+  } catch (error) {
+    toast.error('Failed to delete project');
+  }
 };
 </script>

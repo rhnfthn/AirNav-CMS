@@ -1,4 +1,3 @@
-import { type CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ListProjectsQueryDto } from './dto/list-projects.query.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -9,13 +8,13 @@ export declare class ProjectsController {
     list(query: ListProjectsQueryDto): Promise<{
         items: {
             id: string;
-            createdAt: Date;
             title: string;
+            slug: string;
             description: string;
             content: string;
             image: string | null;
             published: boolean;
-            slug: string;
+            createdAt: Date;
             authorId: string;
         }[];
         pagination: {
@@ -25,37 +24,59 @@ export declare class ProjectsController {
             totalPages: number;
         };
     }>;
+    getPublished(): Promise<{
+        id: string;
+        title: string;
+        slug: string;
+        description: string;
+        content: string;
+        image: string | null;
+        published: boolean;
+        createdAt: Date;
+        authorId: string;
+    }[]>;
     getBySlug(slug: string): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
-        slug: string;
+        createdAt: Date;
         authorId: string;
     }>;
-    create(user: CurrentUser, dto: CreateProjectDto): Promise<{
+    getById(id: string): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
+        createdAt: Date;
+        authorId: string;
+    }>;
+    create(dto: CreateProjectDto): Promise<{
+        id: string;
+        title: string;
         slug: string;
+        description: string;
+        content: string;
+        image: string | null;
+        published: boolean;
+        createdAt: Date;
         authorId: string;
     }>;
     update(id: string, dto: UpdateProjectDto): Promise<{
         id: string;
-        createdAt: Date;
         title: string;
+        slug: string;
         description: string;
         content: string;
         image: string | null;
         published: boolean;
-        slug: string;
+        createdAt: Date;
         authorId: string;
     }>;
     remove(id: string): Promise<{
