@@ -2,11 +2,18 @@
   "name": "frontend",
   "type": "module",
   "private": true,
+  "imports": {
+    "#internal/nuxt/paths": "./scripts/nuxt-internal-paths.mjs"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "prepreview": "node scripts/ensure-preview-artifacts.mjs",
     "preview": "nuxt preview",
+    "prestart": "node scripts/ensure-preview-artifacts.mjs",
+    "start": "node .output/server/index.mjs",
+    "postbuild": "node scripts/patch-nitro-output.js",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {

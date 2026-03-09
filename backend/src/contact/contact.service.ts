@@ -38,7 +38,7 @@ export class ContactService {
     return message;
   }
 
-  async create(dto: CreateContactDto) {
+  create(dto: CreateContactDto) {
     return this.prisma.contactMessage.create({ data: dto });
   }
 

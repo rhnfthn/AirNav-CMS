@@ -56,6 +56,15 @@ yarn build
 bun run build
 ```
 
+Run the production server (Node):
+
+```bash
+# npm
+npm run start
+```
+
+Note: use the `.output/` server entrypoint for production. Don’t run `.nuxt/dist/server/server.mjs` directly (it can trigger `#internal/nuxt/paths` import errors).
+
 Locally preview production build:
 
 ```bash

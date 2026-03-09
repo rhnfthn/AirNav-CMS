@@ -46,7 +46,7 @@ let ContactService = class ContactService {
         }
         return message;
     }
-    async create(dto) {
+    create(dto) {
         return this.prisma.contactMessage.create({ data: dto });
     }
     async markAsRead(id) {

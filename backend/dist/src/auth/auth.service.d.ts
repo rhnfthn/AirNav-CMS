@@ -7,22 +7,22 @@ export declare class AuthService {
     private readonly jwtService;
     constructor(usersService: UsersService, jwtService: JwtService);
     register(dto: RegisterDto): Promise<{
-        id: any;
-        email: any;
-        name: any;
-        createdAt: any;
+        id: string;
+        email: string;
+        name: string;
+        createdAt: Date;
     }>;
     login(dto: LoginDto): Promise<{
         access_token: string;
         user: {
-            id: any;
-            email: any;
-            name: any;
+            id: string;
+            email: string;
+            name: string;
         };
     }>;
     getProfile(userId: string): Promise<{
-        id: any;
-        email: any;
-        name: any;
+        id: string;
+        email: string;
+        name: string;
     }>;
 }

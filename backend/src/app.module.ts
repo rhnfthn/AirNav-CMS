@@ -11,6 +11,11 @@ import { CertificationsModule } from './certifications/certifications.module';
 import { ExperiencesModule } from './experiences/experiences.module';
 import { ToolsModule } from './tools/tools.module';
 import { ContactModule } from './contact/contact.module';
+import { AttachmentsModule } from './attachments/attachments.module';
+import { ThemeModule } from './theme/theme.module';
+import { HomeLayoutModule } from './home-layout/home-layout.module';
+import { PublicSiteSettingsModule } from './public-site-settings/public-site-settings.module';
+import { SiteLogosModule } from './site-logos/site-logos.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
 
@@ -27,6 +32,11 @@ import { LoggingMiddleware } from './common/middleware/logging.middleware';
     ExperiencesModule,
     ToolsModule,
     ContactModule,
+    AttachmentsModule,
+    ThemeModule,
+    HomeLayoutModule,
+    PublicSiteSettingsModule,
+    SiteLogosModule,
   ],
   controllers: [AppController],
   providers: [

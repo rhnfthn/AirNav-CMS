@@ -33,11 +33,91 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+require("dotenv/config");
 const client_1 = require("@prisma/client");
+const adapter_pg_1 = require("@prisma/adapter-pg");
 const bcrypt = __importStar(require("bcrypt"));
-const prisma = new client_1.PrismaClient();
+const pg_1 = require("pg");
+function createPrismaClient() {
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+        throw new Error('DATABASE_URL is missing. Set it in backend/.env');
+    }
+    const pool = new pg_1.Pool({ connectionString: databaseUrl });
+    const adapter = new adapter_pg_1.PrismaPg(pool);
+    const prisma = new client_1.PrismaClient({ adapter });
+    return { prisma, pool };
+}
+const { prisma, pool } = createPrismaClient();
 async function main() {
     console.log('🌱 Seeding database...');
+    const defaultPublicTheme = {
+        primaryBackgroundColor: '#EAF4FB',
+        sidebarBackgroundColor: '#F4F9FD',
+        headerBackgroundColor: '#6FA8DC',
+        primaryTextColor: '#2C3E50',
+        secondaryTextColor: '#64748B',
+        buttonColor: '#6FA8DC',
+        borderColor: '#B8C6DB',
+        loginCardBgColor: '#EAF4FB',
+        loginCardBorderColor: '#B8C6DB',
+        loginCardShadowColor: '#B8C6DB',
+        loginLogoBgColor: '#A7D3F5',
+        loginLogoBorderColor: '#B8C6DB',
+        loginLogoShadowColor: '#B8C6DB',
+        loginHeaderTextColor: '#2C3E50',
+        loginContentTextColor: '#64748B',
+        loginLabelTextColor: '#2C3E50',
+        loginButtonLabel: 'Login',
+        loginButtonBgColor: '#6FA8DC',
+        loginButtonBorderColor: '#B8C6DB',
+        loginButtonShadowColor: '#B8C6DB',
+        loginBackToWebsiteText: '← Back to website',
+    };
+    const defaultAdminTheme = {
+        primaryBackgroundColor: '#FFFFFF',
+        sidebarBackgroundColor: '#FFFFFF',
+        headerBackgroundColor: '#FFFFFF',
+        primaryTextColor: '#000000',
+        secondaryTextColor: '#808080',
+        buttonColor: '#FFFFFF',
+        borderColor: '#000000',
+        loginCardBgColor: '#EAF4FB',
+        loginCardBorderColor: '#B8C6DB',
+        loginCardShadowColor: '#B8C6DB',
+        loginLogoBgColor: '#A7D3F5',
+        loginLogoBorderColor: '#B8C6DB',
+        loginLogoShadowColor: '#B8C6DB',
+        loginHeaderTextColor: '#2C3E50',
+        loginContentTextColor: '#64748B',
+        loginLabelTextColor: '#2C3E50',
+        loginButtonLabel: 'Login',
+        loginButtonBgColor: '#6FA8DC',
+        loginButtonBorderColor: '#B8C6DB',
+        loginButtonShadowColor: '#B8C6DB',
+        loginBackToWebsiteText: '← Back to website',
+    };
+    const existingPublicTheme = await prisma.themeSettings.findUnique({ where: { scope: 'PUBLIC' } });
+    if (existingPublicTheme) {
+        await prisma.themeSettings.update({
+            where: { id: existingPublicTheme.id },
+            data: defaultPublicTheme,
+        });
+    }
+    else {
+        await prisma.themeSettings.create({ data: { scope: 'PUBLIC', ...defaultPublicTheme } });
+    }
+    const existingAdminTheme = await prisma.themeSettings.findUnique({ where: { scope: 'ADMIN' } });
+    if (existingAdminTheme) {
+        await prisma.themeSettings.update({
+            where: { id: existingAdminTheme.id },
+            data: defaultAdminTheme,
+        });
+    }
+    else {
+        await prisma.themeSettings.create({ data: { scope: 'ADMIN', ...defaultAdminTheme } });
+    }
+    console.log('✅ Theme settings (public + admin) seeded');
     const hashedPassword = await bcrypt.hash('admin123', 10);
     const admin = await prisma.admin.upsert({
         where: { email: 'admin@portfolio.com' },
@@ -49,7 +129,7 @@ async function main() {
         },
     });
     console.log('✅ Admin created:', admin.email);
-    const about = await prisma.about.upsert({
+    await prisma.about.upsert({
         where: { id: 'default-about' },
         update: {},
         create: {
@@ -148,5 +228,6 @@ main()
 })
     .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
 });
 //# sourceMappingURL=seed.js.map

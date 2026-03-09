@@ -85,6 +85,7 @@ let AuthService = class AuthService {
             sub: user.id,
             email: user.email,
             name: user.name,
+            role: 'admin',
         };
         return {
             access_token: await this.jwtService.signAsync(payload),

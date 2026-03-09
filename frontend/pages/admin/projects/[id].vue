@@ -1,17 +1,23 @@
 <template>
-  <div>
-    <div class="flex items-center justify-between mb-6">
+  <div class="min-h-full">
+    <div class="flex items-center justify-between mb-8">
       <div>
-        <h2 class="text-xl font-semibold text-gray-900">Edit Project</h2>
-        <p class="text-gray-600">Update project details.</p>
+        <h2 class="text-2xl font-black uppercase tracking-wide theme-text-primary">Edit Project</h2>
+        <p class="mt-1" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">Update project details.</p>
       </div>
-      <button class="btn-secondary text-red-600 hover:bg-red-50" @click="onDelete">Delete</button>
+      <button
+        class="neo-btn-secondary font-black"
+        style="background-color: color-mix(in srgb, var(--bg-main) 75%, var(--color-shadow) 25%);"
+        @click="onDelete"
+      >
+        Delete
+      </button>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
-      <div class="spinner"></div>
+      <div class="neo-spinner"></div>
     </div>
-    <div v-else class="card p-6 max-w-3xl">
+    <div v-else class="neo-card p-6 max-w-3xl">
       <AdminProjectForm
         :initial="project"
         submit-label="Save Changes"

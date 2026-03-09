@@ -7,14 +7,13 @@ export default defineNuxtConfig({
   css: ['~/assets/css/tailwind.css'],
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:3001',
-      siteName: 'Portfolio',
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://127.0.0.1:3001',
+      siteName: 'AirNav',
       siteDescription: 'Full Stack Developer Portfolio',
     },
   },
   app: {
     head: {
-      title: 'Portfolio | Full Stack Developer',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -22,7 +21,6 @@ export default defineNuxtConfig({
           name: 'description',
           content: 'Full Stack Developer Portfolio - Building modern web applications',
         },
-        { name: 'theme-color', content: '#ffffff' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -37,7 +35,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&display=swap',
         },
       ],
     },

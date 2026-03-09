@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateAboutDto } from './dto/update-about.dto';
 
@@ -28,6 +28,9 @@ export class AboutService {
           title: dto.title ?? 'Full Stack Developer',
           description: dto.description ?? '',
           photoUrl: dto.photoUrl,
+          university: dto.university,
+          major: dto.major,
+          gpa: dto.gpa,
         },
       });
     }

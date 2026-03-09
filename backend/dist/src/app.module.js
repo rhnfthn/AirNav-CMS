@@ -20,6 +20,11 @@ const certifications_module_1 = require("./certifications/certifications.module"
 const experiences_module_1 = require("./experiences/experiences.module");
 const tools_module_1 = require("./tools/tools.module");
 const contact_module_1 = require("./contact/contact.module");
+const attachments_module_1 = require("./attachments/attachments.module");
+const theme_module_1 = require("./theme/theme.module");
+const home_layout_module_1 = require("./home-layout/home-layout.module");
+const public_site_settings_module_1 = require("./public-site-settings/public-site-settings.module");
+const site_logos_module_1 = require("./site-logos/site-logos.module");
 const http_exception_filter_1 = require("./common/filters/http-exception.filter");
 const logging_middleware_1 = require("./common/middleware/logging.middleware");
 let AppModule = class AppModule {
@@ -42,6 +47,11 @@ exports.AppModule = AppModule = __decorate([
             experiences_module_1.ExperiencesModule,
             tools_module_1.ToolsModule,
             contact_module_1.ContactModule,
+            attachments_module_1.AttachmentsModule,
+            theme_module_1.ThemeModule,
+            home_layout_module_1.HomeLayoutModule,
+            public_site_settings_module_1.PublicSiteSettingsModule,
+            site_logos_module_1.SiteLogosModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

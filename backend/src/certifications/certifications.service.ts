@@ -7,7 +7,7 @@ import { UpdateCertificationDto } from './dto/update-certification.dto';
 export class CertificationsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
+  findAll() {
     return this.prisma.certification.findMany({
       orderBy: { year: 'desc' },
     });
@@ -21,7 +21,7 @@ export class CertificationsService {
     return cert;
   }
 
-  async create(dto: CreateCertificationDto) {
+  create(dto: CreateCertificationDto) {
     return this.prisma.certification.create({ data: dto });
   }
 

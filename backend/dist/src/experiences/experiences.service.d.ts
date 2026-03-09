@@ -5,48 +5,48 @@ export declare class ExperiencesService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     findAll(): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string;
         company: string;
         position: string;
         startDate: Date;
         endDate: Date | null;
-        description: string;
-        id: string;
-        authorId: string;
     }[]>;
     findOne(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string;
         company: string;
         position: string;
         startDate: Date;
         endDate: Date | null;
-        description: string;
-        id: string;
-        authorId: string;
     }>;
     create(dto: CreateExperienceDto): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string;
         company: string;
         position: string;
         startDate: Date;
         endDate: Date | null;
-        description: string;
-        id: string;
-        authorId: string;
     }>;
     update(id: string, dto: UpdateExperienceDto): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string;
         company: string;
         position: string;
         startDate: Date;
         endDate: Date | null;
-        description: string;
-        id: string;
-        authorId: string;
     }>;
     remove(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        description: string;
         company: string;
         position: string;
         startDate: Date;
         endDate: Date | null;
-        description: string;
-        id: string;
-        authorId: string;
     }>;
 }

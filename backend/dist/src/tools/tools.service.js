@@ -17,7 +17,7 @@ let ToolsService = class ToolsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll() {
+    findAll() {
         return this.prisma.tool.findMany({
             orderBy: { category: 'asc' },
         });
@@ -42,7 +42,7 @@ let ToolsService = class ToolsService {
         }
         return tool;
     }
-    async create(dto) {
+    create(dto) {
         return this.prisma.tool.create({ data: dto });
     }
     async update(id, dto) {

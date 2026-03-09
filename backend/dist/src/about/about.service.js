@@ -37,6 +37,9 @@ let AboutService = class AboutService {
                     title: dto.title ?? 'Full Stack Developer',
                     description: dto.description ?? '',
                     photoUrl: dto.photoUrl,
+                    university: dto.university,
+                    major: dto.major,
+                    gpa: dto.gpa,
                 },
             });
         }

@@ -1,25 +1,40 @@
 <template>
-  <div class="section">
-    <div class="container-page">
+  <div class="py-16" :style="{ backgroundColor: 'var(--pss-experience-section-bg, #F4F9FD)' }">
+    <div class="max-w-6xl mx-auto px-6">
       <!-- Header -->
       <div class="text-center mb-16">
-        <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Career</p>
-        <h1 class="section-title">Work Experience</h1>
-        <p class="section-subtitle mx-auto">
+        <div 
+          class="mb-4 text-xs inline-block px-3 py-1 border-2 rounded-full font-bold"
+          :style="{
+            backgroundColor: 'var(--pss-exp-badge-bg, #EAF4FB)',
+            borderColor: 'var(--pss-exp-badge-border, #B8C6DB)',
+            color: 'var(--pss-exp-badge-text, #2C3E50)'
+          }"
+        >Career</div>
+        <h1
+          class="text-3xl font-black"
+          style="font-family: 'Space Grotesk', sans-serif; color: var(--pss-experience-section-header-text, #1A202C);"
+        >
+          Work Experience
+        </h1>
+        <p class="mt-2 max-w-xl mx-auto" :style="{ color: 'var(--pss-experience-section-content-text, #4A5568)' }">
           My professional journey and the companies I've had the pleasure to work with.
         </p>
       </div>
 
       <!-- Loading state -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="spinner"></div>
+        <div class="neo-spinner"></div>
       </div>
 
       <!-- Timeline -->
       <div v-else-if="experiences.length" class="max-w-3xl mx-auto">
         <div class="relative">
           <!-- Vertical line -->
-          <div class="absolute left-0 md:left-1/2 transform md:-translate-x-px h-full w-0.5 bg-gray-200"></div>
+          <div 
+            class="absolute left-0 md:left-1/2 transform md:-translate-x-px h-full w-1"
+            :style="{ backgroundColor: 'var(--pss-exp-timeline-line-bg, var(--color-border))' }"
+          ></div>
 
           <!-- Timeline items -->
           <div 
@@ -33,26 +48,48 @@
             <!-- Dot -->
             <div 
               :class="[
-                'absolute left-0 md:left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full border-4 border-white shadow',
-                exp.endDate ? 'bg-gray-400' : 'bg-green-500'
+                'absolute left-0 md:left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-md border-[3px]'
               ]"
+              :style="{
+                borderColor: 'var(--pss-exp-timeline-dot-border, var(--color-border))',
+                backgroundColor: exp.endDate
+                  ? 'color-mix(in srgb, var(--bg-main) 75%, var(--bg-header) 25%)'
+                  : 'var(--pss-exp-timeline-dot-bg, var(--color-button))',
+                boxShadow: '2px 2px 0px 0px var(--pss-exp-card-shadow, var(--color-shadow))',
+              }"
             ></div>
 
             <!-- Card -->
             <div 
               :class="[
-                'card p-6 ml-8 md:ml-0',
+                'p-6 ml-8 md:ml-0 border-[3px] rounded-xl transition-transform hover:-translate-y-1',
                 index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'
               ]"
+              :style="{
+                backgroundColor: 'var(--pss-exp-card-bg, #FFFFFF)',
+                borderColor: 'var(--pss-exp-card-border, #B8C6DB)',
+                boxShadow: '6px 6px 0px 0px var(--pss-exp-card-shadow, #B8C6DB)'
+              }"
             >
               <div class="flex items-center gap-2 mb-2" :class="index % 2 === 0 ? 'md:justify-end' : ''">
-                <span class="badge">
+                <span 
+                  class="text-xs px-2 py-0.5 border-2 rounded-full font-bold"
+                  :style="{
+                    backgroundColor: 'var(--pss-exp-card-badge-bg, #EAF4FB)',
+                    borderColor: 'var(--pss-exp-card-badge-border, #B8C6DB)',
+                    color: 'var(--pss-exp-card-badge-text, #2C3E50)'
+                  }"
+                >
                   {{ formatDate(exp.startDate) }} - {{ exp.endDate ? formatDate(exp.endDate) : 'Present' }}
                 </span>
               </div>
-              <h3 class="font-semibold text-lg text-gray-900">{{ exp.position }}</h3>
-              <p class="text-gray-600 font-medium mb-3">{{ exp.company }}</p>
-              <p class="text-sm text-gray-500 leading-relaxed" :class="index % 2 === 0 ? 'md:text-right' : ''">
+              <h3 class="font-black text-lg" :style="{ color: 'var(--pss-exp-card-header-text, #1A202C)' }">{{ exp.position }}</h3>
+              <p class="font-bold mb-3" :style="{ color: 'var(--pss-exp-card-sub-header-text, #4A5568)' }">{{ exp.company }}</p>
+              <p
+                class="text-sm leading-relaxed"
+                :class="index % 2 === 0 ? 'md:text-right' : ''"
+                :style="{ color: 'var(--pss-exp-card-content-text, #4A5568)' }"
+              >
                 {{ exp.description }}
               </p>
             </div>
@@ -61,11 +98,8 @@
       </div>
 
       <!-- Empty state -->
-      <div v-else class="text-center py-16">
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-        </svg>
-        <p class="text-gray-500">No work experience available yet.</p>
+      <div v-else class="neo-card p-16 text-center">
+        <p class="theme-text-secondary font-bold">No work experience available yet.</p>
       </div>
     </div>
   </div>

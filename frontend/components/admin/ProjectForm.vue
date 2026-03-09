@@ -2,20 +2,29 @@
   <form class="space-y-5" @submit.prevent="onSubmit">
     <div class="grid md:grid-cols-2 gap-4">
       <div>
-        <label class="label">Title *</label>
-        <input v-model="form.title" class="input" placeholder="Project title" required />
+        <label class="neo-label">Title *</label>
+        <input v-model="form.title" class="neo-input" placeholder="Project title" required />
       </div>
       <div>
-        <label class="label">Cover Image URL</label>
-        <input v-model="form.coverImage" class="input" placeholder="https://..." />
+        <label class="neo-label">Cover Image (attachment)</label>
+        <input
+          type="file"
+          accept="image/*"
+          class="neo-input"
+          :disabled="loading || uploadingCover"
+          @change="onCoverSelected"
+        />
+        <p class="text-xs mt-1" style="color: color-mix(in srgb, var(--color-text-secondary) 75%, transparent 25%);">
+          Upload an image file (no URL needed)
+        </p>
       </div>
     </div>
 
     <div>
-      <label class="label">Description *</label>
+      <label class="neo-label">Description *</label>
       <textarea
         v-model="form.description"
-        class="input resize-none"
+        class="neo-input resize-none"
         rows="3"
         placeholder="Short description of the project"
         required
@@ -23,10 +32,10 @@
     </div>
 
     <div>
-      <label class="label">Content *</label>
+      <label class="neo-label">Content *</label>
       <textarea
         v-model="form.content"
-        class="input resize-none"
+        class="neo-input resize-none"
         rows="8"
         placeholder="Detailed project description, features, etc."
         required
@@ -34,55 +43,74 @@
     </div>
 
     <div>
-      <label class="label">Tech Stack</label>
+      <label class="neo-label">Tech Stack</label>
       <input 
         v-model="techStackInput" 
-        class="input" 
+        class="neo-input" 
         placeholder="React, TypeScript, Node.js (comma separated)"
       />
-      <p class="text-xs text-gray-500 mt-1">Separate technologies with commas</p>
+      <p class="text-xs mt-1" style="color: color-mix(in srgb, var(--color-text-secondary) 75%, transparent 25%);">Separate technologies with commas</p>
     </div>
 
     <div class="grid md:grid-cols-2 gap-4">
       <div>
-        <label class="label">GitHub URL</label>
-        <input v-model="form.githubUrl" type="url" class="input" placeholder="https://github.com/..." />
+        <label class="neo-label">GitHub URL</label>
+        <input v-model="form.githubUrl" type="url" class="neo-input" placeholder="https://github.com/..." />
       </div>
       <div>
-        <label class="label">Live Demo URL</label>
-        <input v-model="form.liveUrl" type="url" class="input" placeholder="https://..." />
+        <label class="neo-label">Live Demo URL</label>
+        <input v-model="form.liveUrl" type="url" class="neo-input" placeholder="https://..." />
       </div>
     </div>
 
-    <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100 transition-colors">
-      <input v-model="form.published" type="checkbox" class="h-5 w-5 rounded text-gray-900" />
+    <label class="published-toggle flex items-center gap-3 p-4 border-[3px] theme-border rounded-xl cursor-pointer transition-colors">
+      <input v-model="form.published" type="checkbox" class="h-5 w-5 rounded border-2 theme-border" style="accent-color: var(--color-button);" />
       <div>
-        <span class="font-medium text-gray-900">Published</span>
-        <p class="text-sm text-gray-500">Make this project visible on your portfolio</p>
+        <span class="font-bold theme-text-primary">Published</span>
+        <p class="text-sm" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">Make this project visible on your portfolio</p>
       </div>
     </label>
 
-    <div v-if="form.coverImage" class="p-4 bg-gray-50 rounded-xl">
-      <label class="label mb-2">Cover Preview</label>
-      <div class="aspect-video rounded-lg overflow-hidden bg-gray-200 max-w-sm">
+    <div v-if="uploadingCover" class="text-sm font-bold theme-text-secondary">
+      Uploading cover...
+    </div>
+
+    <div v-if="form.coverImage" class="cover-preview p-4 border-[3px] theme-border rounded-xl">
+      <label class="neo-label mb-2">Cover Preview</label>
+      <div
+        class="aspect-video rounded-lg overflow-hidden border-2 theme-border max-w-sm"
+        style="background-color: color-mix(in srgb, var(--bg-main) 85%, var(--color-button) 15%);"
+      >
         <img :src="form.coverImage" alt="Cover preview" class="w-full h-full object-cover" />
       </div>
+      <button
+        type="button"
+        class="mt-3 neo-btn-secondary font-black"
+        :disabled="loading || uploadingCover"
+        @click="form.coverImage = ''"
+      >
+        Remove cover
+      </button>
     </div>
 
     <div class="flex items-center gap-3 pt-2">
-      <button type="submit" class="btn-primary" :disabled="loading">
+      <button type="submit" class="neo-btn-primary font-black" :disabled="loading">
         <span v-if="loading" class="flex items-center gap-2">
-          <div class="spinner w-4 h-4 border-white border-t-transparent"></div>
+          <div class="neo-spinner w-4 h-4"></div>
           Saving...
         </span>
         <span v-else>{{ submitLabel }}</span>
       </button>
-      <NuxtLink to="/admin/projects" class="btn-secondary">Cancel</NuxtLink>
+      <NuxtLink to="/admin/projects" class="neo-btn-secondary font-black">Cancel</NuxtLink>
     </div>
   </form>
 </template>
 
 <script setup lang="ts">
+import { computed, reactive, ref, watch } from 'vue';
+import { useToastStore } from '~/stores/toast';
+import { useUploader } from '~/composables/useUploader';
+
 type ProjectInput = {
   title: string;
   description: string;
@@ -100,6 +128,10 @@ const props = defineProps<{
   loading?: boolean;
 }>();
 const emit = defineEmits<{ (e: 'submit', value: ProjectInput): void }>();
+
+const toast = useToastStore();
+const { uploadFile } = useUploader();
+const uploadingCover = ref(false);
 
 const form = reactive<ProjectInput>({
   title: props.initial?.title ?? '',
@@ -119,18 +151,22 @@ const techStackInput = computed({
   }
 });
 
-watch(() => props.initial, (newVal) => {
-  if (newVal) {
-    form.title = newVal.title ?? '';
-    form.description = newVal.description ?? '';
-    form.content = newVal.content ?? '';
-    form.coverImage = newVal.coverImage ?? '';
-    form.techStack = newVal.techStack ?? [];
-    form.githubUrl = newVal.githubUrl ?? '';
-    form.liveUrl = newVal.liveUrl ?? '';
-    form.published = newVal.published ?? false;
-  }
-}, { deep: true });
+watch(
+  () => props.initial,
+  (newVal: Partial<ProjectInput> | undefined) => {
+    if (newVal) {
+      form.title = newVal.title ?? '';
+      form.description = newVal.description ?? '';
+      form.content = newVal.content ?? '';
+      form.coverImage = newVal.coverImage ?? '';
+      form.techStack = newVal.techStack ?? [];
+      form.githubUrl = newVal.githubUrl ?? '';
+      form.liveUrl = newVal.liveUrl ?? '';
+      form.published = newVal.published ?? false;
+    }
+  },
+  { deep: true },
+);
 
 const onSubmit = () => {
   const payload = { ...form };
@@ -139,4 +175,37 @@ const onSubmit = () => {
   if (!payload.liveUrl) delete payload.liveUrl;
   emit('submit', payload);
 };
+
+const onCoverSelected = async (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+
+  uploadingCover.value = true;
+  try {
+    const url = await uploadFile(file);
+    form.coverImage = url;
+  } catch (error: any) {
+    toast.error(error?.data?.message || 'Failed to upload cover image');
+  } finally {
+    uploadingCover.value = false;
+    input.value = '';
+  }
+};
 </script>
+
+<style scoped>
+.published-toggle {
+  background-color: color-mix(in srgb, var(--bg-main) 92%, var(--color-button) 8%);
+  box-shadow: 3px 3px 0px 0px var(--color-shadow);
+}
+
+.published-toggle:hover {
+  background-color: color-mix(in srgb, var(--bg-main) 85%, var(--color-button) 15%);
+}
+
+.cover-preview {
+  background-color: color-mix(in srgb, var(--bg-main) 92%, var(--color-button) 8%);
+  box-shadow: 3px 3px 0px 0px var(--color-shadow);
+}
+</style>

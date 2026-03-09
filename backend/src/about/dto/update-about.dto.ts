@@ -1,4 +1,11 @@
-import { IsOptional, IsString, IsUrl } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Max,
+  Min,
+} from 'class-validator';
 
 export class UpdateAboutDto {
   @IsOptional()
@@ -12,4 +19,18 @@ export class UpdateAboutDto {
   @IsOptional()
   @IsUrl()
   photoUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  university?: string;
+
+  @IsOptional()
+  @IsString()
+  major?: string;
+
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  @Max(4)
+  gpa?: number;
 }

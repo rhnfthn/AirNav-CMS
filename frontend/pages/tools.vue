@@ -1,57 +1,87 @@
 <template>
-  <div class="section">
-    <div class="container-page">
+  <div class="py-16" :style="{ backgroundColor: 'var(--pss-tools-section-bg, #FFFFFF)' }">
+    <div class="max-w-6xl mx-auto px-6">
       <!-- Header -->
       <div class="text-center mb-12">
-        <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Tech Stack</p>
-        <h1 class="section-title">Tools & Technologies</h1>
-        <p class="section-subtitle mx-auto">
+        <div 
+          class="mb-4 text-xs inline-block px-3 py-1 border-2 rounded-full font-bold"
+          :style="{
+            backgroundColor: 'var(--pss-tools-badge-bg, #EAF4FB)',
+            borderColor: 'var(--pss-tools-badge-border, #B8C6DB)',
+            color: 'var(--pss-tools-badge-text, #2C3E50)'
+          }"
+        >Tech Stack</div>
+        <h1
+          class="text-3xl font-black"
+          style="font-family: 'Space Grotesk', sans-serif; color: var(--pss-tools-header-text, #1A202C);"
+        >
+          Tools & Technologies
+        </h1>
+        <p class="mt-2 max-w-xl mx-auto" :style="{ color: 'var(--pss-tools-content-text, #4A5568)' }">
           The technologies, frameworks, and tools I use to build amazing products.
         </p>
       </div>
 
       <!-- Loading state -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="spinner"></div>
+        <div class="neo-spinner"></div>
       </div>
 
       <!-- Tools by Category -->
-      <div v-else-if="Object.keys(groupedTools).length" class="space-y-12">
-        <div v-for="(tools, category) in groupedTools" :key="category">
-          <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-gray-900"></span>
-            {{ category }}
+      <div v-else-if="categories.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div 
+          v-for="group in categories" 
+          :key="group.category" 
+          class="p-6 border-[3px] rounded-xl"
+          :style="{
+            backgroundColor: 'var(--pss-tools-card-bg, #FFFFFF)',
+            borderColor: 'var(--pss-tools-card-border, #B8C6DB)',
+            boxShadow: '6px 6px 0px 0px var(--pss-tools-card-shadow, #B8C6DB)'
+          }"
+        >
+          <h2 class="text-lg font-black flex items-center gap-2" :style="{ color: 'var(--pss-tools-category-title-text, #2C3E50)' }">
+            <span 
+              class="w-3 h-3 rounded-sm border-2" 
+              :style="{
+                backgroundColor: 'var(--pss-tools-category-dot-bg, var(--color-button))',
+                borderColor: 'var(--pss-tools-category-dot-border, #B8C6DB)'
+              }"
+            ></span>
+            {{ group.category }}
           </h2>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <div 
-              v-for="tool in tools" 
+
+          <div class="mt-4 space-y-3">
+            <div
+              v-for="tool in group.tools"
               :key="tool.id"
-              class="card p-4 text-center group hover:border-gray-300 transition-all"
+              class="flex items-center gap-3"
             >
-              <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                <img 
-                  v-if="tool.iconUrl" 
-                  :src="tool.iconUrl" 
+              <div
+                class="w-9 h-9 rounded-lg border-2 flex items-center justify-center shrink-0"
+                :style="{
+                  backgroundColor: 'var(--pss-tools-icon-bg, #F4F9FD)',
+                  borderColor: 'var(--pss-tools-icon-border, #B8C6DB)'
+                }"
+              >
+                <img
+                  v-if="tool.iconUrl"
+                  :src="tool.iconUrl"
                   :alt="tool.name"
-                  class="w-8 h-8 object-contain"
+                  class="w-5 h-5 object-contain"
                 />
-                <span v-else class="text-lg font-bold text-gray-400">
+                <span v-else class="text-sm font-black" style="color: color-mix(in srgb, var(--color-text-secondary) 55%, transparent 45%);">
                   {{ tool.name.charAt(0) }}
                 </span>
               </div>
-              <p class="text-sm font-medium text-gray-700">{{ tool.name }}</p>
+              <p class="text-sm font-bold leading-tight" :style="{ color: 'var(--pss-tools-item-text, #2C3E50)' }">{{ tool.name }}</p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Empty state -->
-      <div v-else class="text-center py-16">
-        <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-        <p class="text-gray-500">No tools available yet.</p>
+      <div v-else class="neo-card p-16 text-center">
+        <p class="theme-text-secondary font-bold">No tools available yet.</p>
       </div>
     </div>
   </div>
@@ -62,6 +92,15 @@ const { apiFetch } = useApiClient();
 
 const loading = ref(true);
 const groupedTools = ref<Record<string, any[]>>({});
+
+const categories = computed(() => {
+  const entries = Object.entries(groupedTools.value);
+  entries.sort(([a], [b]) => a.localeCompare(b));
+  return entries.map(([category, tools]) => {
+    const sortedTools = [...tools].sort((x, y) => String(x?.name ?? '').localeCompare(String(y?.name ?? '')));
+    return { category, tools: sortedTools };
+  });
+});
 
 onMounted(async () => {
   try {

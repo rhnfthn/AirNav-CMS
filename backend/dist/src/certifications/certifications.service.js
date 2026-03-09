@@ -17,7 +17,7 @@ let CertificationsService = class CertificationsService {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    async findAll() {
+    findAll() {
         return this.prisma.certification.findMany({
             orderBy: { year: 'desc' },
         });
@@ -29,7 +29,7 @@ let CertificationsService = class CertificationsService {
         }
         return cert;
     }
-    async create(dto) {
+    create(dto) {
         return this.prisma.certification.create({ data: dto });
     }
     async update(id, dto) {

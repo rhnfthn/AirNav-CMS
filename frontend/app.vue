@@ -1,4 +1,5 @@
 <template>
+  <ThemeInjector />
   <NuxtLayout>
     <NuxtPage />
   </NuxtLayout>

@@ -27,6 +27,9 @@ model About {
   title       String
   description String   @db.Text
   photoUrl    String?
+  university  String?
+  major       String?
+  gpa         Float?
   updatedAt   DateTime @updatedAt
 
   @@map("about")
@@ -98,4 +101,451 @@ model ContactMessage {
 
   @@index([createdAt])
   @@map("contact_messages")
+}
+
+// ============== ATTACHMENTS (DB) ==============
+model Attachment {
+  id           String   @id @default(uuid())
+  originalName String
+  mimeType     String
+  size         Int
+  data         Bytes
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("attachments")
+}
+
+// ============== THEME SETTINGS (PUBLIC + ADMIN) ==============
+enum ThemeScope {
+  PUBLIC
+  ADMIN
+
+  @@map("theme_scope")
+}
+
+model ThemeSettings {
+  id                     String      @id @default(uuid())
+  scope                  ThemeScope  @default(PUBLIC) @map("scope")
+  primaryBackgroundColor String      @map("primary_background_color")
+  sidebarBackgroundColor String      @map("sidebar_background_color")
+  headerBackgroundColor  String      @map("header_background_color")
+  primaryTextColor       String      @map("primary_text_color")
+  secondaryTextColor     String      @map("secondary_text_color")
+  buttonColor            String      @map("button_color")
+  borderColor            String      @map("border_color")
+
+  // Admin Login Page customization (used by /admin/login)
+  loginCardBgColor        String @default("#EAF4FB") @map("login_card_bg_color")
+  loginCardBorderColor    String @default("#B8C6DB") @map("login_card_border_color")
+  loginCardShadowColor    String @default("#B8C6DB") @map("login_card_shadow_color")
+
+  loginLogoBgColor        String @default("#A7D3F5") @map("login_logo_bg_color")
+  loginLogoBorderColor    String @default("#B8C6DB") @map("login_logo_border_color")
+  loginLogoShadowColor    String @default("#B8C6DB") @map("login_logo_shadow_color")
+
+  loginHeaderTextColor    String @default("#2C3E50") @map("login_header_text_color")
+  loginContentTextColor   String @default("#64748B") @map("login_content_text_color")
+  loginLabelTextColor     String @default("#2C3E50") @map("login_label_text_color")
+
+  loginButtonLabel        String @default("Login") @map("login_button_label")
+  loginButtonBgColor      String @default("#6FA8DC") @map("login_button_bg_color")
+  loginButtonBorderColor  String @default("#B8C6DB") @map("login_button_border_color")
+  loginButtonShadowColor  String @default("#B8C6DB") @map("login_button_shadow_color")
+
+  loginBackToWebsiteText  String @default("← Back to website") @map("login_back_to_website_text")
+  updatedAt              DateTime    @updatedAt @map("updated_at")
+
+  @@unique([scope])
+  @@map("theme_settings")
+}
+
+// ============== HOME LAYOUT SETTINGS (SINGLETON) ==============
+enum HeroImagePosition {
+  left
+  right
+  center
+
+  @@map("hero_image_position")
+}
+
+enum HeroLayout {
+  image_text
+  text_image
+  centered
+
+  @@map("hero_layout")
+}
+
+model HomeLayoutSettings {
+  id                   String            @id @default(uuid())
+  heroImagePosition    HeroImagePosition @default(left) @map("hero_image_position")
+  heroLayout           HeroLayout        @default(image_text) @map("hero_layout")
+  sectionsOrder        Json              @map("sections_order")
+  showFeaturedProjects Boolean           @default(true) @map("show_featured_projects")
+  updatedAt            DateTime          @updatedAt @map("updated_at")
+
+  @@map("home_layout_settings")
+}
+
+// ============== PUBLIC SITE CUSTOMIZATION ==============
+enum PhotoSize {
+  small
+  medium
+  large
+
+  @@map("photo_size")
+}
+
+model PublicSiteSettings {
+  id String @id @default(uuid())
+
+  // Header & Footer
+  headerBgColor    String @default("#6FA8DC") @map("header_bg_color")
+  footerBgColor    String @default("#6FA8DC") @map("footer_bg_color")
+
+  // Cards - general
+  cardBgColor      String @default("#FFFFFF") @map("card_bg_color")
+  cardBorderColor  String @default("#B8C6DB") @map("card_border_color")
+  cardShadowColor  String @default("#B8C6DB") @map("card_shadow_color")
+
+  // Photo Card in Hero
+  heroPhotoSize     PhotoSize @default(medium) @map("hero_photo_size")
+  heroPhotoBorder   String    @default("#B8C6DB") @map("hero_photo_border")
+  heroPhotoShadow   String    @default("#B8C6DB") @map("hero_photo_shadow")
+
+  // Primary Buttons (View Projects, Get in Touch)
+  primaryBtnBg       String @default("#6FA8DC") @map("primary_btn_bg")
+  primaryBtnText     String @default("#FFFFFF") @map("primary_btn_text")
+  primaryBtnBorder   String @default("#B8C6DB") @map("primary_btn_border")
+  primaryBtnShadow   String @default("#B8C6DB") @map("primary_btn_shadow")
+
+  // Secondary Buttons (Learn More, View All, etc.)
+  secondaryBtnBg     String @default("#EAF4FB") @map("secondary_btn_bg")
+  secondaryBtnText   String @default("#2C3E50") @map("secondary_btn_text")
+  secondaryBtnBorder String @default("#B8C6DB") @map("secondary_btn_border")
+  secondaryBtnShadow String @default("#B8C6DB") @map("secondary_btn_shadow")
+
+  // Nav links
+  navLinkColor       String @default("#FFFFFF") @map("nav_link_color")
+  navLinkHoverBg     String @default("#A7D3F5") @map("nav_link_hover_bg")
+
+  // Badge
+  badgeBgColor       String @default("#EAF4FB") @map("badge_bg_color")
+  badgeBorderColor   String @default("#B8C6DB") @map("badge_border_color")
+  badgeTextColor     String @default("#2C3E50") @map("badge_text_color")
+
+  // Section backgrounds
+  sectionAltBg       String @default("#F4F9FD") @map("section_alt_bg")
+  ctaSectionBg       String @default("#FFFFFF") @map("cta_section_bg")
+
+  // Page-specific section backgrounds
+  heroSectionBg         String @default("#FFFFFF") @map("hero_section_bg")
+  aboutSectionBg        String @default("#FFFFFF") @map("about_section_bg")
+  projectsSectionBg     String @default("#F4F9FD") @map("projects_section_bg")
+  certificationsSectionBg String @default("#FFFFFF") @map("certifications_section_bg")
+  experienceSectionBg   String @default("#F4F9FD") @map("experience_section_bg")
+  toolsSectionBg        String @default("#FFFFFF") @map("tools_section_bg")
+  contactSectionBg      String @default("#F4F9FD") @map("contact_section_bg")
+
+  // ============== ABOUT PAGE DETAILED ==============
+  aboutBadgeBg          String @default("#EAF4FB") @map("about_badge_bg")
+  aboutBadgeBorder      String @default("#B8C6DB") @map("about_badge_border")
+  aboutBadgeText        String @default("#2C3E50") @map("about_badge_text")
+  aboutTitleBg          String @default("#6FA8DC") @map("about_title_bg")
+  aboutTitleBorder      String @default("#B8C6DB") @map("about_title_border")
+  aboutTitleText        String @default("#FFFFFF") @map("about_title_text")
+  aboutTitleShadow      String @default("#B8C6DB") @map("about_title_shadow")
+  aboutPhotoBorder      String @default("#B8C6DB") @map("about_photo_border")
+  aboutPhotoShadow      String @default("#B8C6DB") @map("about_photo_shadow")
+  aboutTextColor        String @default("#4A5568") @map("about_text_color")
+
+  // About page: Info card text colors (Portfolio Owner / subtitle)
+  aboutInfoHeaderText   String @default("#1A202C") @map("about_info_header_text")
+  aboutInfoContentText  String @default("#4A5568") @map("about_info_content_text")
+
+  // About page: Education block text colors
+  aboutEducationHeaderText  String @default("#4A5568") @map("about_education_header_text")
+  aboutEducationContentText String @default("#2C3E50") @map("about_education_content_text")
+
+  aboutCardBg           String @default("#FFFFFF") @map("about_card_bg")
+  aboutCardBorder       String @default("#B8C6DB") @map("about_card_border")
+  aboutCardShadow       String @default("#B8C6DB") @map("about_card_shadow")
+
+  // About page: Outer wrapper card (frame around the info card)
+  aboutOuterCardBg      String @default("#F4F9FD") @map("about_outer_card_bg")
+  aboutOuterCardBorder  String @default("#B8C6DB") @map("about_outer_card_border")
+  aboutOuterCardShadow  String @default("#B8C6DB") @map("about_outer_card_shadow")
+
+  // About page: Skills & Tools category cards (separate from Info Card)
+  aboutSkillsCardBg     String @default("#FFFFFF") @map("about_skills_card_bg")
+  aboutSkillsCardBorder String @default("#B8C6DB") @map("about_skills_card_border")
+  aboutSkillsCardShadow String @default("#B8C6DB") @map("about_skills_card_shadow")
+
+  aboutSkillBadgeBg     String @default("#EAF4FB") @map("about_skill_badge_bg")
+  aboutSkillBadgeBorder String @default("#B8C6DB") @map("about_skill_badge_border")
+  aboutSkillBadgeText   String @default("#2C3E50") @map("about_skill_badge_text")
+  aboutBtnBg            String @default("#EAF4FB") @map("about_btn_bg")
+  aboutBtnText          String @default("#2C3E50") @map("about_btn_text")
+  aboutBtnBorder        String @default("#B8C6DB") @map("about_btn_border")
+  aboutBtnShadow        String @default("#B8C6DB") @map("about_btn_shadow")
+
+  // ============== PROJECTS PAGE DETAILED ==============
+  projectBadgeBg        String @default("#EAF4FB") @map("project_badge_bg")
+  projectBadgeBorder    String @default("#B8C6DB") @map("project_badge_border")
+  projectBadgeText      String @default("#2C3E50") @map("project_badge_text")
+  projectsHeaderText    String @default("#1A202C") @map("projects_header_text")
+  projectsContentText   String @default("#4A5568") @map("projects_content_text")
+  projectFilterBadgeBg      String @default("#FFFFFF") @map("project_filter_badge_bg")
+  projectFilterBadgeBorder  String @default("#B8C6DB") @map("project_filter_badge_border")
+  projectFilterBadgeText    String @default("#2C3E50") @map("project_filter_badge_text")
+  projectFilterBadgeShadow  String @default("#B8C6DB") @map("project_filter_badge_shadow")
+  projectCardBg         String @default("#FFFFFF") @map("project_card_bg")
+  projectCardBorder     String @default("#B8C6DB") @map("project_card_border")
+  projectCardShadow     String @default("#B8C6DB") @map("project_card_shadow")
+  projectPhotoHeight    String @default("medium") @map("project_photo_height")
+  projectPopupBg        String @default("#FFFFFF") @map("project_popup_bg")
+  projectPopupBorder    String @default("#B8C6DB") @map("project_popup_border")
+  projectPopupShadow    String @default("#B8C6DB") @map("project_popup_shadow")
+  projectBtnPrimaryBg   String @default("#6FA8DC") @map("project_btn_primary_bg")
+  projectBtnPrimaryText String @default("#FFFFFF") @map("project_btn_primary_text")
+  projectBtnPrimaryBorder String @default("#B8C6DB") @map("project_btn_primary_border")
+  projectBtnPrimaryShadow String @default("#B8C6DB") @map("project_btn_primary_shadow")
+  projectBtnSecondaryBg String @default("#EAF4FB") @map("project_btn_secondary_bg")
+  projectBtnSecondaryText String @default("#2C3E50") @map("project_btn_secondary_text")
+  projectBtnSecondaryBorder String @default("#B8C6DB") @map("project_btn_secondary_border")
+  projectBtnSecondaryShadow String @default("#B8C6DB") @map("project_btn_secondary_shadow")
+
+  // ============== CERTIFICATIONS PAGE DETAILED ==============
+  certBadgeBg           String @default("#EAF4FB") @map("cert_badge_bg")
+  certBadgeBorder       String @default("#B8C6DB") @map("cert_badge_border")
+  certBadgeText         String @default("#2C3E50") @map("cert_badge_text")
+  certYearBadgeBg       String @default("#EAF4FB") @map("cert_year_badge_bg")
+  certYearBadgeBorder   String @default("#B8C6DB") @map("cert_year_badge_border")
+  certYearBadgeText     String @default("#2C3E50") @map("cert_year_badge_text")
+  certCardBg            String @default("#FFFFFF") @map("cert_card_bg")
+  certCardBorder        String @default("#B8C6DB") @map("cert_card_border")
+  certCardShadow        String @default("#B8C6DB") @map("cert_card_shadow")
+  certCardHeaderText    String @default("#1A202C") @map("cert_card_header_text")
+  certCardContentText   String @default("#4A5568") @map("cert_card_content_text")
+  certBtnBg             String @default("#6FA8DC") @map("cert_btn_bg")
+  certBtnText           String @default("#2C3E50") @map("cert_btn_text")
+  certBtnBorder         String @default("#B8C6DB") @map("cert_btn_border")
+  certBtnHoverText      String @default("#6FA8DC") @map("cert_btn_hover_text")
+
+  // ============== EXPERIENCE PAGE DETAILED ==============
+  experienceSectionHeaderText String @default("#1A202C") @map("experience_section_header_text")
+  experienceSectionContentText String @default("#4A5568") @map("experience_section_content_text")
+  expBadgeBg            String @default("#EAF4FB") @map("exp_badge_bg")
+  expBadgeBorder        String @default("#B8C6DB") @map("exp_badge_border")
+  expBadgeText          String @default("#2C3E50") @map("exp_badge_text")
+  expCardBg             String @default("#FFFFFF") @map("exp_card_bg")
+  expCardBorder         String @default("#B8C6DB") @map("exp_card_border")
+  expCardShadow         String @default("#B8C6DB") @map("exp_card_shadow")
+  expCardBadgeBg        String @default("#EAF4FB") @map("exp_card_badge_bg")
+  expCardBadgeBorder    String @default("#B8C6DB") @map("exp_card_badge_border")
+  expCardBadgeText      String @default("#2C3E50") @map("exp_card_badge_text")
+  expCardHeaderText     String @default("#1A202C") @map("exp_card_header_text")
+  expCardSubHeaderText  String @default("#4A5568") @map("exp_card_sub_header_text")
+  expCardContentText    String @default("#4A5568") @map("exp_card_content_text")
+  expTimelineDotBg      String @default("#6FA8DC") @map("exp_timeline_dot_bg")
+  expTimelineDotBorder  String @default("#B8C6DB") @map("exp_timeline_dot_border")
+  expTimelineLineBg     String @default("#B8C6DB") @map("exp_timeline_line_bg")
+
+  // ============== TOOLS PAGE DETAILED ==============
+  toolsBadgeBg          String @default("#EAF4FB") @map("tools_badge_bg")
+  toolsBadgeBorder      String @default("#B8C6DB") @map("tools_badge_border")
+  toolsBadgeText        String @default("#2C3E50") @map("tools_badge_text")
+  toolsHeaderText       String @default("#1A202C") @map("tools_header_text")
+  toolsContentText      String @default("#4A5568") @map("tools_content_text")
+  toolsCardBg           String @default("#FFFFFF") @map("tools_card_bg")
+  toolsCardBorder       String @default("#B8C6DB") @map("tools_card_border")
+  toolsCardShadow       String @default("#B8C6DB") @map("tools_card_shadow")
+  toolsCategoryTitleText String @default("#2C3E50") @map("tools_category_title_text")
+  toolsItemText         String @default("#2C3E50") @map("tools_item_text")
+  toolsTextColor        String @default("#2C3E50") @map("tools_text_color")
+  toolsIconBg           String @default("#F4F9FD") @map("tools_icon_bg")
+  toolsIconBorder       String @default("#B8C6DB") @map("tools_icon_border")
+  toolsCategoryDotBg    String @default("#6FA8DC") @map("tools_category_dot_bg")
+  toolsCategoryDotBorder String @default("#B8C6DB") @map("tools_category_dot_border")
+
+  // ============== CONTACT PAGE DETAILED ==============
+  contactBadgeBg        String @default("#EAF4FB") @map("contact_badge_bg")
+  contactBadgeBorder    String @default("#B8C6DB") @map("contact_badge_border")
+  contactBadgeText      String @default("#2C3E50") @map("contact_badge_text")
+  contactHeaderText     String @default("#1A202C") @map("contact_header_text")
+  contactContentText    String @default("#4A5568") @map("contact_content_text")
+  contactCardBg         String @default("#FFFFFF") @map("contact_card_bg")
+  contactCardBorder     String @default("#B8C6DB") @map("contact_card_border")
+  contactCardShadow     String @default("#B8C6DB") @map("contact_card_shadow")
+  contactTextColor      String @default("#4A5568") @map("contact_text_color")
+  contactLabelColor     String @default("#2C3E50") @map("contact_label_color")
+  contactInputBg        String @default("#FFFFFF") @map("contact_input_bg")
+  contactInputBorder    String @default("#B8C6DB") @map("contact_input_border")
+  contactInputText      String @default("#2C3E50") @map("contact_input_text")
+  contactBtnBg          String @default("#6FA8DC") @map("contact_btn_bg")
+  contactBtnText        String @default("#FFFFFF") @map("contact_btn_text")
+  contactBtnBorder      String @default("#B8C6DB") @map("contact_btn_border")
+  contactBtnShadow      String @default("#B8C6DB") @map("contact_btn_shadow")
+  contactDirectText     String @default("#4A5568") @map("contact_direct_text")
+  contactSocialBtnBg    String @default("#EAF4FB") @map("contact_social_btn_bg")
+  contactSocialBtnText  String @default("#2C3E50") @map("contact_social_btn_text")
+  contactSocialBtnBorder String @default("#B8C6DB") @map("contact_social_btn_border")
+  contactSocialBtnShadow String @default("#B8C6DB") @map("contact_social_btn_shadow")
+
+  // ============== HEADER SECTION DETAILED ==============
+  headerTextColor        String @default("#FFFFFF") @map("header_text_color")
+  headerHoverBg          String @default("#A7D3F5") @map("header_hover_bg")
+  headerHoverText        String @default("#2C3E50") @map("header_hover_text")
+  headerLogoBg           String @default("#6FA8DC") @map("header_logo_bg")
+  headerLogoBorder       String @default("#B8C6DB") @map("header_logo_border")
+  headerLogoText         String @default("#FFFFFF") @map("header_logo_text")
+  headerLogoShadow       String @default("#B8C6DB") @map("header_logo_shadow")
+  sectionDividerColor    String @default("#B8C6DB") @map("section_divider_color")
+
+  // ============== HOME HERO SECTION DETAILED ==============
+  homeHeroCardWidth      String @default("medium") @map("home_hero_card_width")
+  homeHeroCardBg         String @default("#FFFFFF") @map("home_hero_card_bg")
+  homeHeroCardBorder     String @default("#B8C6DB") @map("home_hero_card_border")
+  homeHeroCardShadow     String @default("#B8C6DB") @map("home_hero_card_shadow")
+  homeHeroBadgeBg        String @default("#EAF4FB") @map("home_hero_badge_bg")
+  homeHeroBadgeBorder    String @default("#B8C6DB") @map("home_hero_badge_border")
+  homeHeroBadgeText      String @default("#2C3E50") @map("home_hero_badge_text")
+  homeHeroHeaderText     String @default("#1A202C") @map("home_hero_header_text")
+  homeHeroContentText    String @default("#4A5568") @map("home_hero_content_text")
+  homeHeroExpBadgeBg     String @default("#6FA8DC") @map("home_hero_exp_badge_bg")
+  homeHeroExpBadgeBorder String @default("#B8C6DB") @map("home_hero_exp_badge_border")
+  homeHeroExpBadgeText   String @default("#FFFFFF") @map("home_hero_exp_badge_text")
+  homeHeroExpBadgeShadow String @default("#B8C6DB") @map("home_hero_exp_badge_shadow")
+  homeHeroBtnBg          String @default("#6FA8DC") @map("home_hero_btn_bg")
+  homeHeroBtnText        String @default("#FFFFFF") @map("home_hero_btn_text")
+  homeHeroBtnBorder      String @default("#B8C6DB") @map("home_hero_btn_border")
+  homeHeroBtnShadow      String @default("#B8C6DB") @map("home_hero_btn_shadow")
+
+  // ============== HOME ABOUT SECTION DETAILED ==============
+  homeAboutBadgeBg       String @default("#EAF4FB") @map("home_about_badge_bg")
+  homeAboutBadgeBorder   String @default("#B8C6DB") @map("home_about_badge_border")
+  homeAboutBadgeText     String @default("#2C3E50") @map("home_about_badge_text")
+  homeAboutHeaderText    String @default("#1A202C") @map("home_about_header_text")
+  homeAboutContentText   String @default("#4A5568") @map("home_about_content_text")
+  homeAboutInfoBadgeBg   String @default("#EAF4FB") @map("home_about_info_badge_bg")
+  homeAboutInfoBadgeBorder String @default("#B8C6DB") @map("home_about_info_badge_border")
+  homeAboutInfoBadgeText String @default("#2C3E50") @map("home_about_info_badge_text")
+  homeAboutStatCardBg    String @default("#FFFFFF") @map("home_about_stat_card_bg")
+  homeAboutStatCardBorder String @default("#B8C6DB") @map("home_about_stat_card_border")
+  homeAboutStatCardShadow String @default("#B8C6DB") @map("home_about_stat_card_shadow")
+  homeAboutStatNumberText String @default("#1A202C") @map("home_about_stat_number_text")
+  homeAboutStatLabelText String @default("#4A5568") @map("home_about_stat_label_text")
+  homeAboutBtnBg         String @default("#EAF4FB") @map("home_about_btn_bg")
+  homeAboutBtnText       String @default("#2C3E50") @map("home_about_btn_text")
+  homeAboutBtnBorder     String @default("#B8C6DB") @map("home_about_btn_border")
+  homeAboutBtnShadow     String @default("#B8C6DB") @map("home_about_btn_shadow")
+
+  // ============== HOME PORTFOLIO SECTION DETAILED ==============
+  homePortfolioBadgeBg     String @default("#EAF4FB") @map("home_portfolio_badge_bg")
+  homePortfolioBadgeBorder String @default("#B8C6DB") @map("home_portfolio_badge_border")
+  homePortfolioBadgeText   String @default("#2C3E50") @map("home_portfolio_badge_text")
+  homePortfolioHeaderText  String @default("#1A202C") @map("home_portfolio_header_text")
+  homePortfolioCardBg      String @default("#FFFFFF") @map("home_portfolio_card_bg")
+  homePortfolioCardBorder  String @default("#B8C6DB") @map("home_portfolio_card_border")
+  homePortfolioCardShadow  String @default("#B8C6DB") @map("home_portfolio_card_shadow")
+  homePortfolioCardHeaderText  String @default("#1A202C") @map("home_portfolio_card_header_text")
+  homePortfolioCardContentText String @default("#4A5568") @map("home_portfolio_card_content_text")
+  homePortfolioTechBadgeBg     String @default("#EAF4FB") @map("home_portfolio_tech_badge_bg")
+  homePortfolioTechBadgeBorder String @default("#B8C6DB") @map("home_portfolio_tech_badge_border")
+  homePortfolioTechBadgeText   String @default("#2C3E50") @map("home_portfolio_tech_badge_text")
+  homePortfolioBtnBg       String @default("#EAF4FB") @map("home_portfolio_btn_bg")
+  homePortfolioBtnText     String @default("#2C3E50") @map("home_portfolio_btn_text")
+  homePortfolioBtnBorder   String @default("#B8C6DB") @map("home_portfolio_btn_border")
+  homePortfolioBtnShadow   String @default("#B8C6DB") @map("home_portfolio_btn_shadow")
+
+  // ============== HOME CERTIFICATIONS SECTION DETAILED ==============
+  homeCertBadgeBg        String @default("#EAF4FB") @map("home_cert_badge_bg")
+  homeCertBadgeBorder    String @default("#B8C6DB") @map("home_cert_badge_border")
+  homeCertBadgeText      String @default("#2C3E50") @map("home_cert_badge_text")
+  homeCertHeaderText     String @default("#1A202C") @map("home_cert_header_text")
+  homeCertCardBg         String @default("#FFFFFF") @map("home_cert_card_bg")
+  homeCertCardBorder     String @default("#B8C6DB") @map("home_cert_card_border")
+  homeCertCardShadow     String @default("#B8C6DB") @map("home_cert_card_shadow")
+  homeCertCardHeaderText String @default("#1A202C") @map("home_cert_card_header_text")
+  homeCertCardContentText String @default("#4A5568") @map("home_cert_card_content_text")
+  homeCertViewBtnBg      String @default("#EAF4FB") @map("home_cert_view_btn_bg")
+  homeCertViewBtnText    String @default("#2C3E50") @map("home_cert_view_btn_text")
+  homeCertViewBtnBorder  String @default("#B8C6DB") @map("home_cert_view_btn_border")
+  homeCertViewBtnShadow  String @default("#B8C6DB") @map("home_cert_view_btn_shadow")
+  homeCertAllBtnBg       String @default("#EAF4FB") @map("home_cert_all_btn_bg")
+  homeCertAllBtnText     String @default("#2C3E50") @map("home_cert_all_btn_text")
+  homeCertAllBtnBorder   String @default("#B8C6DB") @map("home_cert_all_btn_border")
+  homeCertAllBtnShadow   String @default("#B8C6DB") @map("home_cert_all_btn_shadow")
+
+  // ============== HOME EXPERIENCE SECTION DETAILED ==============
+  homeExpBadgeBg         String @default("#EAF4FB") @map("home_exp_badge_bg")
+  homeExpBadgeBorder     String @default("#B8C6DB") @map("home_exp_badge_border")
+  homeExpBadgeText       String @default("#2C3E50") @map("home_exp_badge_text")
+  homeExpHeaderText      String @default("#1A202C") @map("home_exp_header_text")
+  homeExpCardBg          String @default("#FFFFFF") @map("home_exp_card_bg")
+  homeExpCardBorder      String @default("#B8C6DB") @map("home_exp_card_border")
+  homeExpCardShadow      String @default("#B8C6DB") @map("home_exp_card_shadow")
+  homeExpCardHeaderText  String @default("#1A202C") @map("home_exp_card_header_text")
+  homeExpCardContentText String @default("#4A5568") @map("home_exp_card_content_text")
+  homeExpBtnBg           String @default("#EAF4FB") @map("home_exp_btn_bg")
+  homeExpBtnText         String @default("#2C3E50") @map("home_exp_btn_text")
+  homeExpBtnBorder       String @default("#B8C6DB") @map("home_exp_btn_border")
+  homeExpBtnShadow       String @default("#B8C6DB") @map("home_exp_btn_shadow")
+
+  // ============== HOME TOOLS SECTION DETAILED ==============
+  homeToolsBadgeBg       String @default("#EAF4FB") @map("home_tools_badge_bg")
+  homeToolsBadgeBorder   String @default("#B8C6DB") @map("home_tools_badge_border")
+  homeToolsBadgeText     String @default("#2C3E50") @map("home_tools_badge_text")
+  homeToolsHeaderText    String @default("#1A202C") @map("home_tools_header_text")
+  homeToolsCardBg        String @default("#FFFFFF") @map("home_tools_card_bg")
+  homeToolsCardBorder    String @default("#B8C6DB") @map("home_tools_card_border")
+  homeToolsCardShadow    String @default("#B8C6DB") @map("home_tools_card_shadow")
+  homeToolsCardHeaderText   String @default("#1A202C") @map("home_tools_card_header_text")
+  homeToolsToolBadgeBg      String @default("#EAF4FB") @map("home_tools_tool_badge_bg")
+  homeToolsToolBadgeBorder  String @default("#B8C6DB") @map("home_tools_tool_badge_border")
+  homeToolsToolBadgeText    String @default("#2C3E50") @map("home_tools_tool_badge_text")
+  homeToolsBtnBg         String @default("#EAF4FB") @map("home_tools_btn_bg")
+  homeToolsBtnText       String @default("#2C3E50") @map("home_tools_btn_text")
+  homeToolsBtnBorder     String @default("#B8C6DB") @map("home_tools_btn_border")
+  homeToolsBtnShadow     String @default("#B8C6DB") @map("home_tools_btn_shadow")
+
+  // ============== HOME CTA SECTION DETAILED ==============
+  homeCtaHeaderText      String @default("#1A202C") @map("home_cta_header_text")
+  homeCtaContentText     String @default("#4A5568") @map("home_cta_content_text")
+  homeCtaBtnBg           String @default("#6FA8DC") @map("home_cta_btn_bg")
+  homeCtaBtnText         String @default("#FFFFFF") @map("home_cta_btn_text")
+  homeCtaBtnBorder       String @default("#B8C6DB") @map("home_cta_btn_border")
+  homeCtaBtnShadow       String @default("#B8C6DB") @map("home_cta_btn_shadow")
+
+  // ============== FOOTER SECTION DETAILED ==============
+  footerHeaderText       String @default("#FFFFFF") @map("footer_header_text")
+  footerContentText      String @default("#E2E8F0") @map("footer_content_text")
+  footerCopyrightText    String @default("#CBD5E0") @map("footer_copyright_text")
+  footerLogoBg           String @default("#FFFFFF") @map("footer_logo_bg")
+  footerLogoBorder       String @default("#B8C6DB") @map("footer_logo_border")
+  footerLogoShadow       String @default("#B8C6DB") @map("footer_logo_shadow")
+  footerSocialBtnBg      String @default("#FFFFFF") @map("footer_social_btn_bg")
+  footerSocialBtnBorder  String @default("#B8C6DB") @map("footer_social_btn_border")
+  footerSocialBtnText    String @default("#2C3E50") @map("footer_social_btn_text")
+  footerSocialBtnShadow  String @default("#B8C6DB") @map("footer_social_btn_shadow")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("public_site_settings")
+}
+
+// ============== SITE LOGO (CRUD) ==============
+model SiteLogo {
+  id          String   @id @default(uuid())
+  name        String   @default("Rhn Fthn")
+  imageUrl    String?  @map("image_url")
+  altText     String   @default("Logo") @map("alt_text")
+  linkUrl     String   @default("/") @map("link_url")
+  position    String   @default("header") // header, footer, both
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("site_logos")
 }

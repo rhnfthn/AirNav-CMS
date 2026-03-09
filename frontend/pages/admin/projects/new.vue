@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div class="mb-6">
-      <h2 class="text-xl font-semibold text-gray-900">New Project</h2>
-      <p class="text-gray-600">Create a new portfolio project.</p>
+  <div class="min-h-full">
+    <div class="mb-8">
+      <h2 class="text-2xl font-black uppercase tracking-wide theme-text-primary">New Project</h2>
+      <p class="mt-1" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">Create a new portfolio project.</p>
     </div>
-    <div class="card p-6 max-w-3xl">
+    <div class="neo-card p-6 max-w-3xl">
       <AdminProjectForm submit-label="Create Project" :loading="saving" @submit="onCreate" />
     </div>
   </div>

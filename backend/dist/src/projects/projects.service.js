@@ -20,7 +20,9 @@ let ProjectsService = class ProjectsService {
     }
     async list(query) {
         const skip = (query.page - 1) * query.limit;
-        const where = query.published === undefined ? undefined : { published: query.published };
+        const where = query.published === undefined
+            ? undefined
+            : { published: query.published };
         const [items, total] = await Promise.all([
             this.prisma.project.findMany({
                 where,

@@ -1,62 +1,70 @@
 <template>
-  <div>
-    <div class="flex items-center justify-between mb-6">
+  <div class="min-h-full">
+    <div class="flex items-center justify-between mb-8">
       <div>
-        <h2 class="text-xl font-semibold text-gray-900">Projects</h2>
-        <p class="text-gray-600">Manage your portfolio projects.</p>
+        <h2 class="text-2xl font-black uppercase tracking-wide theme-text-primary">Projects</h2>
+        <p class="mt-1" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">Manage your portfolio projects.</p>
       </div>
-      <NuxtLink to="/admin/projects/new" class="btn-primary">+ New Project</NuxtLink>
+      <NuxtLink to="/admin/projects/new" class="neo-btn-primary font-black">+ New Project</NuxtLink>
     </div>
 
-    <div class="card p-4 mb-4">
-      <label class="flex items-center gap-2 text-sm text-gray-600">
-        <input v-model="onlyPublished" type="checkbox" class="rounded" />
+    <div class="neo-card p-4 mb-6">
+      <label class="neo-label flex items-center gap-2 text-sm">
+        <input v-model="onlyPublished" type="checkbox" class="rounded border-2 theme-border" style="accent-color: var(--color-button);" />
         Show published only
       </label>
     </div>
 
     <div v-if="loading" class="flex justify-center py-12">
-      <div class="spinner"></div>
+      <div class="neo-spinner"></div>
     </div>
 
-    <div v-else-if="projects.length === 0" class="card p-12 text-center">
-      <p class="text-gray-500">No projects yet. Create your first one!</p>
+    <div v-else-if="projects.length === 0" class="neo-card p-12 text-center">
+      <p class="font-bold" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">No projects yet. Create your first one!</p>
     </div>
 
-    <div v-else class="card overflow-hidden">
-      <table class="min-w-full">
-        <thead class="bg-gray-50">
+    <div v-else class="neo-card overflow-hidden">
+      <table class="neo-table min-w-full">
+        <thead>
           <tr>
-            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Title</th>
-            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 hidden md:table-cell">Slug</th>
-            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-            <th class="px-4 py-3 text-right text-sm font-medium text-gray-500">Actions</th>
+            <th class="px-4 py-3 text-left text-sm font-black uppercase tracking-wide">Title</th>
+            <th class="px-4 py-3 text-left text-sm font-black uppercase tracking-wide hidden md:table-cell">Slug</th>
+            <th class="px-4 py-3 text-left text-sm font-black uppercase tracking-wide">Status</th>
+            <th class="px-4 py-3 text-right text-sm font-black uppercase tracking-wide">Actions</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100">
-          <tr v-for="p in projects" :key="p.id" class="hover:bg-gray-50">
+        <tbody>
+          <tr v-for="p in projects" :key="p.id">
             <td class="px-4 py-3">
               <div class="flex items-center gap-3">
-                <div v-if="p.coverImage" class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                <div
+                  v-if="p.coverImage"
+                  class="w-10 h-10 rounded-lg border-2 theme-border overflow-hidden flex-shrink-0"
+                  style="background-color: color-mix(in srgb, var(--bg-main) 88%, var(--color-border) 12%);"
+                >
                   <img :src="p.coverImage" :alt="p.title" class="w-full h-full object-cover" />
                 </div>
-                <span class="font-medium text-gray-900 truncate">{{ p.title }}</span>
+                <span class="font-bold theme-text-primary truncate">{{ p.title }}</span>
               </div>
             </td>
-            <td class="px-4 py-3 text-sm text-gray-500 hidden md:table-cell">{{ p.slug }}</td>
+            <td class="px-4 py-3 text-sm hidden md:table-cell" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">{{ p.slug }}</td>
             <td class="px-4 py-3">
-              <span :class="['badge', p.published ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600']">
+              <span :class="[p.published ? 'neo-badge-green' : 'neo-badge-gray']">
                 {{ p.published ? 'Published' : 'Draft' }}
               </span>
             </td>
             <td class="px-4 py-3 text-right">
               <div class="flex justify-end gap-2">
-                <NuxtLink :to="`/admin/projects/${p.id}`" class="btn-ghost p-2">
+                <NuxtLink :to="`/admin/projects/${p.id}`" class="neo-btn-ghost p-2">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                   </svg>
                 </NuxtLink>
-                <button @click="deleteProject(p.id)" class="btn-ghost p-2 text-red-600 hover:bg-red-50">
+                <button
+                  @click="deleteProject(p.id)"
+                  class="neo-btn-ghost p-2"
+                  style="color: color-mix(in srgb, var(--color-text-secondary) 90%, transparent 10%);"
+                >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                   </svg>
@@ -68,11 +76,11 @@
       </table>
     </div>
 
-    <div v-if="totalPages > 1" class="mt-4 flex items-center justify-between">
-      <p class="text-sm text-gray-500">Page {{ page }} of {{ totalPages }}</p>
+    <div v-if="totalPages > 1" class="mt-6 flex items-center justify-between">
+      <p class="text-sm font-bold" style="color: color-mix(in srgb, var(--color-text-secondary) 85%, transparent 15%);">Page {{ page }} of {{ totalPages }}</p>
       <div class="flex gap-2">
-        <button class="btn-secondary text-sm" :disabled="page <= 1" @click="page--">Previous</button>
-        <button class="btn-secondary text-sm" :disabled="page >= totalPages" @click="page++">Next</button>
+        <button class="neo-btn-secondary text-sm font-black" :disabled="page <= 1" @click="page--">Previous</button>
+        <button class="neo-btn-secondary text-sm font-black" :disabled="page >= totalPages" @click="page++">Next</button>
       </div>
     </div>
   </div>

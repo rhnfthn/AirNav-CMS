@@ -15,6 +15,9 @@ class UpdateAboutDto {
     title;
     description;
     photoUrl;
+    university;
+    major;
+    gpa;
 }
 exports.UpdateAboutDto = UpdateAboutDto;
 __decorate([
@@ -32,4 +35,21 @@ __decorate([
     (0, class_validator_1.IsUrl)(),
     __metadata("design:type", String)
 ], UpdateAboutDto.prototype, "photoUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAboutDto.prototype, "university", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdateAboutDto.prototype, "major", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsNumber)({ maxDecimalPlaces: 2 }),
+    (0, class_validator_1.Min)(0),
+    (0, class_validator_1.Max)(4),
+    __metadata("design:type", Number)
+], UpdateAboutDto.prototype, "gpa", void 0);
 //# sourceMappingURL=update-about.dto.js.map

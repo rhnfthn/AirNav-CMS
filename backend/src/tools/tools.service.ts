@@ -7,7 +7,7 @@ import { UpdateToolDto } from './dto/update-tool.dto';
 export class ToolsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findAll() {
+  findAll() {
     return this.prisma.tool.findMany({
       orderBy: { category: 'asc' },
     });
@@ -38,7 +38,7 @@ export class ToolsService {
     return tool;
   }
 
-  async create(dto: CreateToolDto) {
+  create(dto: CreateToolDto) {
     return this.prisma.tool.create({ data: dto });
   }
 

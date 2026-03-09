@@ -3,20 +3,55 @@ import { CreateContactDto } from './dto/create-contact.dto';
 export declare class ContactController {
     private readonly contactService;
     constructor(contactService: ContactService);
-    create(dto: CreateContactDto): Promise<any>;
+    create(dto: CreateContactDto): import("@prisma/client").Prisma.Prisma__ContactMessageClient<{
+        id: string;
+        name: string;
+        email: string;
+        createdAt: Date;
+        message: string;
+        read: boolean;
+    }, never, import("@prisma/client/runtime/client").DefaultArgs, import("@prisma/client").Prisma.PrismaClientOptions>;
     findAll(page?: string, limit?: string): Promise<{
-        data: any;
+        data: {
+            id: string;
+            name: string;
+            email: string;
+            createdAt: Date;
+            message: string;
+            read: boolean;
+        }[];
         meta: {
-            total: any;
+            total: number;
             page: number;
             limit: number;
             totalPages: number;
         };
     }>;
     getUnreadCount(): Promise<{
-        unreadCount: any;
+        unreadCount: number;
     }>;
-    findOne(id: string): Promise<any>;
-    markAsRead(id: string): Promise<any>;
-    remove(id: string): Promise<any>;
+    findOne(id: string): Promise<{
+        id: string;
+        name: string;
+        email: string;
+        createdAt: Date;
+        message: string;
+        read: boolean;
+    }>;
+    markAsRead(id: string): Promise<{
+        id: string;
+        name: string;
+        email: string;
+        createdAt: Date;
+        message: string;
+        read: boolean;
+    }>;
+    remove(id: string): Promise<{
+        id: string;
+        name: string;
+        email: string;
+        createdAt: Date;
+        message: string;
+        read: boolean;
+    }>;
 }

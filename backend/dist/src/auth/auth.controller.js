@@ -30,7 +30,7 @@ let AuthController = class AuthController {
         return this.authService.login(dto);
     }
     getProfile(req) {
-        return this.authService.getProfile(req.user.sub);
+        return this.authService.getProfile(req.user.userId);
     }
 };
 exports.AuthController = AuthController;
