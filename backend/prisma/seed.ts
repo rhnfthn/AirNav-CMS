@@ -3,12 +3,10 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import * as bcrypt from 'bcrypt';
 import { Pool } from 'pg';
+import { getDatabaseUrl } from '../src/config/database-url';
 
 function createPrismaClient() {
-  const databaseUrl = process.env.DATABASE_URL;
-  if (!databaseUrl) {
-    throw new Error('DATABASE_URL is missing. Set it in backend/.env');
-  }
+  const databaseUrl = getDatabaseUrl();
 
   const pool = new Pool({ connectionString: databaseUrl });
   const adapter = new PrismaPg(pool);
@@ -75,24 +73,32 @@ async function main() {
     loginBackToWebsiteText: '← Back to website',
   };
 
-  const existingPublicTheme = await prisma.themeSettings.findUnique({ where: { scope: 'PUBLIC' } });
+  const existingPublicTheme = await prisma.themeSettings.findUnique({
+    where: { scope: 'PUBLIC' },
+  });
   if (existingPublicTheme) {
     await prisma.themeSettings.update({
       where: { id: existingPublicTheme.id },
       data: defaultPublicTheme,
     });
   } else {
-    await prisma.themeSettings.create({ data: { scope: 'PUBLIC', ...defaultPublicTheme } });
+    await prisma.themeSettings.create({
+      data: { scope: 'PUBLIC', ...defaultPublicTheme },
+    });
   }
 
-  const existingAdminTheme = await prisma.themeSettings.findUnique({ where: { scope: 'ADMIN' } });
+  const existingAdminTheme = await prisma.themeSettings.findUnique({
+    where: { scope: 'ADMIN' },
+  });
   if (existingAdminTheme) {
     await prisma.themeSettings.update({
       where: { id: existingAdminTheme.id },
       data: defaultAdminTheme,
     });
   } else {
-    await prisma.themeSettings.create({ data: { scope: 'ADMIN', ...defaultAdminTheme } });
+    await prisma.themeSettings.create({
+      data: { scope: 'ADMIN', ...defaultAdminTheme },
+    });
   }
 
   console.log('✅ Theme settings (public + admin) seeded');

@@ -2,6 +2,7 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
+import { getDatabaseUrl } from '../config/database-url';
 
 @Injectable()
 export class PrismaService
@@ -11,10 +12,7 @@ export class PrismaService
   private readonly pool: Pool;
 
   constructor() {
-    const databaseUrl = process.env.DATABASE_URL;
-    if (!databaseUrl) {
-      throw new Error('DATABASE_URL is missing. Set it in backend/.env');
-    }
+    const databaseUrl = getDatabaseUrl();
 
     const pool = new Pool({ connectionString: databaseUrl });
     const adapter = new PrismaPg(pool);
