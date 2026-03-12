@@ -421,6 +421,7 @@ model PublicSiteSettings {
   homeHeroBtnText        String @default("#FFFFFF") @map("home_hero_btn_text")
   homeHeroBtnBorder      String @default("#B8C6DB") @map("home_hero_btn_border")
   homeHeroBtnShadow      String @default("#B8C6DB") @map("home_hero_btn_shadow")
+  homeHeroAnotherDesignUrl String @default("") @map("home_hero_another_design_url")
 
   // ============== HOME ABOUT SECTION DETAILED ==============
   homeAboutBadgeBg       String @default("#EAF4FB") @map("home_about_badge_bg")

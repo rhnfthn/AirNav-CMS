@@ -32,7 +32,7 @@
         <div class="lg:col-span-1">
           <!-- Info Card -->
           <div 
-            class="p-6 sticky top-24 border-[3px] rounded-xl"
+            class="p-6 lg:sticky lg:top-24 border-[3px] rounded-xl"
             :style="{
               backgroundColor: 'var(--pss-about-card-bg, #FFFFFF)',
               borderColor: 'var(--pss-about-card-border, var(--color-border))',
@@ -100,7 +100,7 @@
         <div class="lg:col-span-2">
           <div class="max-w-none">
             <p 
-              class="text-lg leading-relaxed whitespace-pre-line"
+              class="text-lg leading-relaxed whitespace-pre-line text-justify"
               :style="{ color: 'var(--pss-about-text-color, var(--color-text-secondary))' }"
             >
               {{ about?.description || 'No description available.' }}
@@ -144,7 +144,7 @@
           </div>
 
           <!-- Quick Links -->
-          <div class="mt-12 flex flex-wrap gap-4">
+          <div class="mt-12 flex flex-wrap gap-4 justify-center">
             <NuxtLink 
               to="/projects" 
               class="font-black text-lg px-8 py-3 border-[3px] rounded-lg"

@@ -191,6 +191,7 @@ export interface PublicSiteSettings {
   homeHeroBtnText: string;
   homeHeroBtnBorder: string;
   homeHeroBtnShadow: string;
+  homeHeroAnotherDesignUrl: string;
   // Home About section detailed
   homeAboutBadgeBg: string;
   homeAboutBadgeBorder: string;
@@ -482,6 +483,7 @@ const DEFAULT_SETTINGS: PublicSiteSettings = {
   homeHeroBtnText: '#FFFFFF',
   homeHeroBtnBorder: '#B8C6DB',
   homeHeroBtnShadow: '#B8C6DB',
+  homeHeroAnotherDesignUrl: '',
   // Home About section detailed
   homeAboutBadgeBg: '#EAF4FB',
   homeAboutBadgeBorder: '#B8C6DB',

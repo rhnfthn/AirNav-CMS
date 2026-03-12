@@ -190,6 +190,7 @@ class UpdatePublicSiteSettingsDto {
     homeHeroBtnText;
     homeHeroBtnBorder;
     homeHeroBtnShadow;
+    homeHeroAnotherDesignUrl;
     homeAboutBadgeBg;
     homeAboutBadgeBorder;
     homeAboutBadgeText;
@@ -1702,6 +1703,11 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], UpdatePublicSiteSettingsDto.prototype, "homeHeroBtnShadow", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UpdatePublicSiteSettingsDto.prototype, "homeHeroAnotherDesignUrl", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),

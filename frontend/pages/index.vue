@@ -10,7 +10,7 @@
 
         <div class="max-w-6xl mx-auto px-6">
           <div
-			class="gap-1 md:gap-2 items-center"
+			class="gap-8 md:gap-10 items-center"
             :class="heroLayoutClass"
           >
             <div
@@ -77,8 +77,23 @@
                     boxShadow: '4px 4px 0px 0px var(--pss-home-hero-btn-shadow, #B8C6DB)'
                   }"
                 >
-                  View Projects
+                  View Projects →
                 </NuxtLink>
+                  <a
+                    v-if="pssStore.settings.homeHeroAnotherDesignUrl"
+                    :href="pssStore.settings.homeHeroAnotherDesignUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-black text-lg px-8 py-3 border-[3px] rounded-xl hover:translate-x-1 hover:translate-y-1 transition-transform inline-block"
+                    :style="{
+                      backgroundColor: 'var(--pss-home-hero-btn-bg, #6FA8DC)',
+                      color: 'var(--pss-home-hero-btn-text, #FFFFFF)',
+                      borderColor: 'var(--pss-home-hero-btn-border, #B8C6DB)',
+                      boxShadow: '4px 4px 0px 0px var(--pss-home-hero-btn-shadow, #B8C6DB)'
+                    }"
+                  >
+                    Another Design
+                  </a>
               </div>
             </div>
 
@@ -356,29 +371,46 @@
             <div 
               v-for="cert in featuredCertifications" 
               :key="cert.id" 
-              class="p-6 border-[3px] rounded-xl"
+              class="overflow-hidden border-[3px] rounded-xl"
               :style="{
                 backgroundColor: 'var(--pss-home-cert-card-bg, #FFFFFF)',
                 borderColor: 'var(--pss-home-cert-card-border, #B8C6DB)',
                 boxShadow: '6px 6px 0px 0px var(--pss-home-cert-card-shadow, #B8C6DB)'
               }"
             >
-              <h3 class="font-black mb-2" :style="{ color: 'var(--pss-home-cert-card-header-text, #1A202C)' }">{{ cert.title }}</h3>
-              <p class="text-sm font-bold" :style="{ color: 'var(--pss-home-cert-card-content-text, #4A5568)' }">{{ cert.issuer }} • {{ cert.year }}</p>
-              <div v-if="cert.credentialUrl" class="mt-4">
-                <a 
-                  :href="cert.credentialUrl" 
-                  target="_blank" 
-                  class="font-black px-4 py-2 border-[3px] rounded-lg hover:translate-x-1 hover:translate-y-1 transition-transform inline-flex"
-                  :style="{
-                    backgroundColor: 'var(--pss-home-cert-view-btn-bg, #EAF4FB)',
-                    color: 'var(--pss-home-cert-view-btn-text, #2C3E50)',
-                    borderColor: 'var(--pss-home-cert-view-btn-border, #B8C6DB)',
-                    boxShadow: '3px 3px 0px 0px var(--pss-home-cert-view-btn-shadow, #B8C6DB)'
-                  }"
-                >
-                  View Credential →
-                </a>
+              <div 
+                v-if="cert.imageUrl" 
+                class="aspect-[16/9] border-b-[3px]"
+                :style="{ 
+                  borderColor: 'var(--pss-home-cert-card-border, #B8C6DB)',
+                  backgroundColor: 'var(--pss-home-cert-card-bg, #FFFFFF)'
+                }"
+              >
+                <img 
+                  :src="cert.imageUrl" 
+                  :alt="cert.title"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+
+              <div class="p-6">
+                <h3 class="font-black mb-2" :style="{ color: 'var(--pss-home-cert-card-header-text, #1A202C)' }">{{ cert.title }}</h3>
+                <p class="text-sm font-bold" :style="{ color: 'var(--pss-home-cert-card-content-text, #4A5568)' }">{{ cert.issuer }} • {{ cert.year }}</p>
+                <div v-if="cert.credentialUrl" class="mt-4">
+                  <a 
+                    :href="cert.credentialUrl" 
+                    target="_blank" 
+                    class="font-black px-4 py-2 border-[3px] rounded-lg hover:translate-x-1 hover:translate-y-1 transition-transform inline-flex"
+                    :style="{
+                      backgroundColor: 'var(--pss-home-cert-view-btn-bg, #EAF4FB)',
+                      color: 'var(--pss-home-cert-view-btn-text, #2C3E50)',
+                      borderColor: 'var(--pss-home-cert-view-btn-border, #B8C6DB)',
+                      boxShadow: '3px 3px 0px 0px var(--pss-home-cert-view-btn-shadow, #B8C6DB)'
+                    }"
+                  >
+                    View Credential →
+                  </a>
+                </div>
               </div>
             </div>
           </div>

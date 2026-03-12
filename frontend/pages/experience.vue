@@ -42,7 +42,7 @@
             :key="exp.id"
             :class="[
               'relative mb-12 md:mb-16',
-              index % 2 === 0 ? 'md:pr-[50%] md:text-right' : 'md:pl-[50%] md:ml-auto'
+              index % 2 === 0 ? 'md:pr-[50%]' : 'md:pl-[50%] md:ml-auto'
             ]"
           >
             <!-- Dot -->
@@ -62,8 +62,8 @@
             <!-- Card -->
             <div 
               :class="[
-                'p-6 ml-8 md:ml-0 border-[3px] rounded-xl transition-transform hover:-translate-y-1',
-                index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'
+                'p-6 ml-8 md:ml-0 border-[3px] rounded-xl transition-transform hover:-translate-y-1 text-left',
+                index % 2 === 0 ? 'md:mr-8 md:text-right' : 'md:ml-8 md:text-left'
               ]"
               :style="{
                 backgroundColor: 'var(--pss-exp-card-bg, #FFFFFF)',
@@ -86,8 +86,7 @@
               <h3 class="font-black text-lg" :style="{ color: 'var(--pss-exp-card-header-text, #1A202C)' }">{{ exp.position }}</h3>
               <p class="font-bold mb-3" :style="{ color: 'var(--pss-exp-card-sub-header-text, #4A5568)' }">{{ exp.company }}</p>
               <p
-                class="text-sm leading-relaxed"
-                :class="index % 2 === 0 ? 'md:text-right' : ''"
+                class="text-sm leading-relaxed text-justify"
                 :style="{ color: 'var(--pss-exp-card-content-text, #4A5568)' }"
               >
                 {{ exp.description }}

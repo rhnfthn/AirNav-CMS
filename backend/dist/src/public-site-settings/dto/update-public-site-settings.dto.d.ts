@@ -177,6 +177,7 @@ export declare class UpdatePublicSiteSettingsDto {
     homeHeroBtnText?: string;
     homeHeroBtnBorder?: string;
     homeHeroBtnShadow?: string;
+    homeHeroAnotherDesignUrl?: string;
     homeAboutBadgeBg?: string;
     homeAboutBadgeBorder?: string;
     homeAboutBadgeText?: string;

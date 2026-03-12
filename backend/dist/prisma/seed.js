@@ -38,11 +38,9 @@ const client_1 = require("@prisma/client");
 const adapter_pg_1 = require("@prisma/adapter-pg");
 const bcrypt = __importStar(require("bcrypt"));
 const pg_1 = require("pg");
+const database_url_1 = require("../src/config/database-url");
 function createPrismaClient() {
-    const databaseUrl = process.env.DATABASE_URL;
-    if (!databaseUrl) {
-        throw new Error('DATABASE_URL is missing. Set it in backend/.env');
-    }
+    const databaseUrl = (0, database_url_1.getDatabaseUrl)();
     const pool = new pg_1.Pool({ connectionString: databaseUrl });
     const adapter = new adapter_pg_1.PrismaPg(pool);
     const prisma = new client_1.PrismaClient({ adapter });
@@ -97,7 +95,9 @@ async function main() {
         loginButtonShadowColor: '#B8C6DB',
         loginBackToWebsiteText: '← Back to website',
     };
-    const existingPublicTheme = await prisma.themeSettings.findUnique({ where: { scope: 'PUBLIC' } });
+    const existingPublicTheme = await prisma.themeSettings.findUnique({
+        where: { scope: 'PUBLIC' },
+    });
     if (existingPublicTheme) {
         await prisma.themeSettings.update({
             where: { id: existingPublicTheme.id },
@@ -105,9 +105,13 @@ async function main() {
         });
     }
     else {
-        await prisma.themeSettings.create({ data: { scope: 'PUBLIC', ...defaultPublicTheme } });
+        await prisma.themeSettings.create({
+            data: { scope: 'PUBLIC', ...defaultPublicTheme },
+        });
     }
-    const existingAdminTheme = await prisma.themeSettings.findUnique({ where: { scope: 'ADMIN' } });
+    const existingAdminTheme = await prisma.themeSettings.findUnique({
+        where: { scope: 'ADMIN' },
+    });
     if (existingAdminTheme) {
         await prisma.themeSettings.update({
             where: { id: existingAdminTheme.id },
@@ -115,7 +119,9 @@ async function main() {
         });
     }
     else {
-        await prisma.themeSettings.create({ data: { scope: 'ADMIN', ...defaultAdminTheme } });
+        await prisma.themeSettings.create({
+            data: { scope: 'ADMIN', ...defaultAdminTheme },
+        });
     }
     console.log('✅ Theme settings (public + admin) seeded');
     const hashedPassword = await bcrypt.hash('admin123', 10);

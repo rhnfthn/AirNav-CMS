@@ -2,7 +2,7 @@
   <div>
     <!-- Welcome message -->
     <div class="mb-8">
-      <h1 class="text-2xl font-black theme-text-primary">Welcome back! 👋</h1>
+      <h1 class="text-2xl font-black theme-text-primary">Welcome back!</h1>
       <p class="theme-text-secondary font-medium mt-1">Here's an overview of your portfolio content.</p>
     </div>
 
@@ -112,6 +112,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineComponent, h } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 
 definePageMeta({ layout: 'admin', middleware: 'admin-auth' });
@@ -136,28 +137,174 @@ const statsData = ref({
 });
 const recentMessages = ref<any[]>([]);
 
-// Icon components
-const IconFolder = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>`,
-};
-const IconCertificate = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`,
-};
-const IconBriefcase = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`,
-};
-const IconMail = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`,
-};
-const IconPlus = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>`,
-};
-const IconUser = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>`,
-};
-const IconEye = {
-  template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>`,
-};
+// Icon components (render functions to work with runtime-only Vue)
+const IconFolder = defineComponent({
+  name: 'IconFolder',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
+
+const IconCertificate = defineComponent({
+  name: 'IconCertificate',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M9 12l2 2 4-4',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
+
+const IconBriefcase = defineComponent({
+  name: 'IconBriefcase',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M12 12h.01',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
+
+const IconMail = defineComponent({
+  name: 'IconMail',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
+
+const IconPlus = defineComponent({
+  name: 'IconPlus',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M12 4v16m8-8H4',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2.5',
+        }),
+      ],
+    );
+  },
+});
+
+const IconPencil = defineComponent({
+  name: 'IconPencil',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M16.862 3.487a2.1 2.1 0 012.97 2.97L8.25 18.04 4 19l.96-4.25L16.862 3.487z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M15 5l4 4',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
+
+const IconEye = defineComponent({
+  name: 'IconEye',
+  render() {
+    return h(
+      'svg',
+      { fill: 'none', stroke: 'currentColor', viewBox: '0 0 24 24' },
+      [
+        h('path', {
+          d: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+        h('path', {
+          d: 'M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+          'stroke-width': '2',
+        }),
+      ],
+    );
+  },
+});
 
 const stats = computed(() => [
   {
@@ -239,7 +386,7 @@ onMounted(async () => {
 
 const quickActions = [
   { to: '/admin/projects/new', label: 'New Project', description: 'Create a new project', icon: IconPlus },
-  { to: '/admin/about', label: 'Edit About', description: 'Update your profile', icon: IconUser },
+  { to: '/admin/about', label: 'Edit About', description: 'Update your profile', icon: IconPencil },
   { to: '/', label: 'View Website', description: 'See your public site', icon: IconEye },
 ];
 </script>

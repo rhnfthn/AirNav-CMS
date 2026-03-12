@@ -1248,6 +1248,10 @@ export class UpdatePublicSiteSettingsDto {
   })
   homeHeroBtnShadow?: string;
 
+  @IsOptional()
+  @IsString()
+  homeHeroAnotherDesignUrl?: string;
+
   // ============== HOME ABOUT SECTION DETAILED ==============
   @IsOptional()
   @IsString()

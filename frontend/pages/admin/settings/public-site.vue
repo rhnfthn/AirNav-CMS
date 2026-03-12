@@ -161,6 +161,20 @@
               <AdminColorRow label="Button Border" v-model="form.homeHeroBtnBorder" />
               <AdminColorRow label="Button Shadow" v-model="form.homeHeroBtnShadow" />
             </div>
+
+            <h4 class="text-sm font-black theme-text-primary mt-4 mb-2">Another Design Button</h4>
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label class="neo-label">URL</label>
+                <input
+                  v-model="form.homeHeroAnotherDesignUrl"
+                  class="neo-input"
+                  type="url"
+                  placeholder="https://..."
+                />
+                <p class="text-xs theme-text-secondary mt-1">Jika kosong, tombol tidak akan tampil di home.</p>
+              </div>
+            </div>
           </div>
 
           <!-- Section 2: About Me -->
@@ -1875,6 +1889,7 @@ const form = reactive<PublicSiteSettings>({
   homeHeroBtnText: '#FFFFFF',
   homeHeroBtnBorder: '#B8C6DB',
   homeHeroBtnShadow: '#B8C6DB',
+  homeHeroAnotherDesignUrl: '',
   // Home About section detailed
   homeAboutBadgeBg: '#EAF4FB',
   homeAboutBadgeBorder: '#B8C6DB',
@@ -1986,7 +2001,21 @@ const toUpdateDto = () => {
 
 const isValidHex = (value: string) => /^#([0-9a-fA-F]{6})$/.test(value);
 
-const NON_COLOR_FIELDS = new Set<string>(['heroPhotoSize', 'projectPhotoHeight', 'homeHeroCardWidth']);
+const NON_COLOR_FIELDS = new Set<string>([
+  'heroPhotoSize',
+  'projectPhotoHeight',
+  'homeHeroCardWidth',
+  'homeHeroAnotherDesignUrl',
+]);
+
+const isValidHttpUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
 
 const buildPartialDto = (fields: Array<keyof PublicSiteSettings>) => {
   const dto: Partial<PublicSiteSettings> = {};
@@ -2021,6 +2050,14 @@ const normalizeForm = () => {
 
 const savePartial = async (sectionId: string, fields: Array<keyof PublicSiteSettings>, successLabel?: string) => {
   if (!validateFieldsAsColors(fields)) return;
+
+  if (fields.includes('homeHeroAnotherDesignUrl')) {
+    const raw = String(form.homeHeroAnotherDesignUrl || '').trim();
+    if (raw.length > 0 && !isValidHttpUrl(raw)) {
+      toast.error('Invalid URL for Another Design. Use http(s)://...');
+      return;
+    }
+  }
 
   saving.value = true;
   savingSection.value = sectionId;
@@ -2075,6 +2112,7 @@ const FIELD_GROUPS: Record<string, Array<keyof PublicSiteSettings>> = {
     'homeHeroBtnText',
     'homeHeroBtnBorder',
     'homeHeroBtnShadow',
+    'homeHeroAnotherDesignUrl',
   ],
   homeAbout: [
     'aboutSectionBg',

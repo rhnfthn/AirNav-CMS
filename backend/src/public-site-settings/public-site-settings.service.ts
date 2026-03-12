@@ -191,6 +191,7 @@ const DEFAULT_SETTINGS = {
   homeHeroBtnText: '#FFFFFF',
   homeHeroBtnBorder: '#B8C6DB',
   homeHeroBtnShadow: '#B8C6DB',
+  homeHeroAnotherDesignUrl: '',
 
   // Home About section detailed
   homeAboutBadgeBg: '#EAF4FB',

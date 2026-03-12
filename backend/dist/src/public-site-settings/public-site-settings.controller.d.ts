@@ -4,6 +4,8 @@ export declare class PublicSiteSettingsController {
     private readonly service;
     constructor(service: PublicSiteSettingsService);
     getSettings(): Promise<{
+        id: string;
+        updatedAt: Date;
         headerBgColor: string;
         footerBgColor: string;
         cardBgColor: string;
@@ -101,8 +103,8 @@ export declare class PublicSiteSettingsController {
         certCardContentText: string;
         certBtnBg: string;
         certBtnText: string;
-        certBtnHoverText: string;
         certBtnBorder: string;
+        certBtnHoverText: string;
         experienceSectionHeaderText: string;
         experienceSectionContentText: string;
         expBadgeBg: string;
@@ -182,6 +184,7 @@ export declare class PublicSiteSettingsController {
         homeHeroBtnText: string;
         homeHeroBtnBorder: string;
         homeHeroBtnShadow: string;
+        homeHeroAnotherDesignUrl: string;
         homeAboutBadgeBg: string;
         homeAboutBadgeBorder: string;
         homeAboutBadgeText: string;
@@ -276,10 +279,10 @@ export declare class PublicSiteSettingsController {
         footerSocialBtnBorder: string;
         footerSocialBtnText: string;
         footerSocialBtnShadow: string;
-        id: string;
-        updatedAt: Date;
     }>;
     updateSettings(dto: UpdatePublicSiteSettingsDto): Promise<{
+        id: string;
+        updatedAt: Date;
         headerBgColor: string;
         footerBgColor: string;
         cardBgColor: string;
@@ -377,8 +380,8 @@ export declare class PublicSiteSettingsController {
         certCardContentText: string;
         certBtnBg: string;
         certBtnText: string;
-        certBtnHoverText: string;
         certBtnBorder: string;
+        certBtnHoverText: string;
         experienceSectionHeaderText: string;
         experienceSectionContentText: string;
         expBadgeBg: string;
@@ -458,6 +461,7 @@ export declare class PublicSiteSettingsController {
         homeHeroBtnText: string;
         homeHeroBtnBorder: string;
         homeHeroBtnShadow: string;
+        homeHeroAnotherDesignUrl: string;
         homeAboutBadgeBg: string;
         homeAboutBadgeBorder: string;
         homeAboutBadgeText: string;
@@ -552,8 +556,6 @@ export declare class PublicSiteSettingsController {
         footerSocialBtnBorder: string;
         footerSocialBtnText: string;
         footerSocialBtnShadow: string;
-        id: string;
-        updatedAt: Date;
     }>;
     getDefaults(): {
         headerBgColor: string;
@@ -734,6 +736,7 @@ export declare class PublicSiteSettingsController {
         homeHeroBtnText: string;
         homeHeroBtnBorder: string;
         homeHeroBtnShadow: string;
+        homeHeroAnotherDesignUrl: string;
         homeAboutBadgeBg: string;
         homeAboutBadgeBorder: string;
         homeAboutBadgeText: string;

@@ -14,13 +14,11 @@ const common_1 = require("@nestjs/common");
 const client_1 = require("@prisma/client");
 const adapter_pg_1 = require("@prisma/adapter-pg");
 const pg_1 = require("pg");
+const database_url_1 = require("../config/database-url");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     pool;
     constructor() {
-        const databaseUrl = process.env.DATABASE_URL;
-        if (!databaseUrl) {
-            throw new Error('DATABASE_URL is missing. Set it in backend/.env');
-        }
+        const databaseUrl = (0, database_url_1.getDatabaseUrl)();
         const pool = new pg_1.Pool({ connectionString: databaseUrl });
         const adapter = new adapter_pg_1.PrismaPg(pool);
         super({ adapter });
