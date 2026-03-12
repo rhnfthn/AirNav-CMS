@@ -3,10 +3,12 @@
   "type": "module",
   "private": true,
   "imports": {
-    "#internal/nuxt/paths": "./scripts/nuxt-internal-paths.mjs"
+    "#internal/nuxt/paths": "./scripts/nuxt-internal-paths.mjs",
+    "#app-manifest": "./app-manifest.stub.ts"
   },
   "scripts": {
     "build": "nuxt build",
+    "predev": "nuxt prepare",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "prepreview": "node scripts/ensure-preview-artifacts.mjs",

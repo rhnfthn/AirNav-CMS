@@ -2,8 +2,8 @@
   <div class="theme-bg-main py-16">
     <div class="max-w-6xl mx-auto px-6">
       <div class="mb-8">
-        <h1 class="text-2xl font-black tracking-wide uppercase theme-text-primary">Projects</h1>
-        <p class="mt-1 text-sm theme-text-secondary font-medium">Daftar project yang sudah dipublish.</p>
+        <h1 class="text-2xl font-black tracking-wide uppercase theme-text-primary">{{ t('public.projectsIndex.title') }}</h1>
+        <p class="mt-1 text-sm theme-text-secondary font-medium">{{ t('public.projectsIndex.description') }}</p>
       </div>
 
       <div v-if="pending" class="flex justify-center py-12">
@@ -18,7 +18,7 @@
         >
           <div class="font-bold theme-text-primary">{{ p.title }}</div>
           <div class="mt-1 text-sm theme-text-secondary">{{ p.description }}</div>
-          <div class="mt-3 text-sm font-bold border-b-[3px] inline-block pb-0.5" style="color: var(--color-text-primary); border-color: var(--color-button);">Read detail</div>
+          <div class="mt-3 text-sm font-bold border-b-[3px] inline-block pb-0.5" style="color: var(--color-text-primary); border-color: var(--color-button);">{{ t('public.projectsIndex.readDetail') }}</div>
         </NuxtLink>
       </div>
     </div>
@@ -26,9 +26,11 @@
 </template>
 
 <script setup lang="ts">
+const { t } = useT();
+
 useSeoMeta({
-  title: 'Projects',
-  description: 'List of projects',
+  title: () => t('public.projectsIndex.headTitle'),
+  description: () => t('public.projectsIndex.headDesc'),
 });
 
 type Project = {

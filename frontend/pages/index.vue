@@ -40,13 +40,13 @@
                   borderColor: 'var(--pss-home-hero-badge-border, #B8C6DB)',
                   color: 'var(--pss-home-hero-badge-text, #2C3E50)'
                 }"
-              >Full Stack Developer</div>
+              >{{ t('public.home.hero.badge') }}</div>
               <h1 
                 class="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight mb-6" 
                 style="font-family: 'Space Grotesk', sans-serif;"
                 :style="{ color: 'var(--pss-home-hero-header-text, #1A202C)' }"
               >
-                Building modern web
+                {{ t('public.home.hero.titlePrefix') }}
                 <span
                   class="px-2 border-[3px] inline-block -rotate-1"
                   :style="{
@@ -56,7 +56,7 @@
                     boxShadow: '4px 4px 0px 0px var(--pss-home-hero-exp-badge-shadow, #B8C6DB)'
                   }"
                 >
-                  experiences
+                  {{ t('public.home.hero.titleHighlight') }}
                 </span>
               </h1>
               <p 
@@ -64,7 +64,7 @@
                 :class="layoutStore.layout.heroLayout === 'centered' ? 'mx-auto' : ''"
                 :style="{ color: 'var(--pss-home-hero-content-text, #4A5568)' }"
               >
-                Hi, I'm a passionate full stack developer specializing in crafting modern web applications. With expertise in both frontend and backend technologies, I create seamless and engaging digital experiences that bring ideas to life.
+                {{ t('public.home.hero.description') }}
               </p>
               <div class="flex flex-col sm:flex-row gap-4" :class="layoutStore.layout.heroLayout === 'centered' ? 'justify-center' : ''">
                 <NuxtLink 
@@ -77,7 +77,7 @@
                     boxShadow: '4px 4px 0px 0px var(--pss-home-hero-btn-shadow, #B8C6DB)'
                   }"
                 >
-                  View Projects →
+                  {{ t('public.home.hero.viewProjects') }}
                 </NuxtLink>
                   <a
                     v-if="pssStore.settings.homeHeroAnotherDesignUrl"
@@ -92,7 +92,7 @@
                       boxShadow: '4px 4px 0px 0px var(--pss-home-hero-btn-shadow, #B8C6DB)'
                     }"
                   >
-                    Another Design
+                    {{ t('public.home.hero.anotherDesign') }}
                   </a>
               </div>
             </div>
@@ -138,19 +138,19 @@
                   borderColor: 'var(--pss-home-about-badge-border, #B8C6DB)',
                   color: 'var(--pss-home-about-badge-text, #2C3E50)'
                 }"
-              >About Me</div>
+              >{{ t('public.home.about.badge') }}</div>
               <h2 
                 class="text-3xl font-black mb-4" 
                 style="font-family: 'Space Grotesk', sans-serif;"
                 :style="{ color: 'var(--pss-home-about-header-text, #1A202C)' }"
               >
-                {{ about?.title || 'Full Stack Developer' }}
+                {{ about?.title || t('public.common.fullStackDeveloper') }}
               </h2>
               <p 
                 class="leading-relaxed mb-6"
                 :style="{ color: 'var(--pss-home-about-content-text, #4A5568)' }"
               >
-                {{ (about?.description?.substring(0, 300) || 'Passionate developer with expertise in building modern web applications.') + '...' }}
+                {{ (about?.description?.substring(0, 300) || t('public.home.about.fallbackDesc')) + '...' }}
               </p>
 
               <div v-if="about?.university || about?.major || gpaNumber !== null" class="mb-6 flex flex-wrap gap-2">
@@ -180,7 +180,7 @@
                     borderColor: 'var(--pss-home-about-info-badge-border, #B8C6DB)',
                     color: 'var(--pss-home-about-info-badge-text, #2C3E50)'
                   }"
-                >GPA: {{ gpaNumber.toFixed(2) }}</span>
+                >{{ t('public.common.gpa') }}: {{ gpaNumber.toFixed(2) }}</span>
               </div>
               <NuxtLink 
                 to="/about" 
@@ -192,7 +192,7 @@
                   boxShadow: '4px 4px 0px 0px var(--pss-home-about-btn-shadow, #B8C6DB)'
                 }"
               >
-                Learn more about me →
+                {{ t('public.home.about.learnMore') }}
               </NuxtLink>
             </div>
 
@@ -206,7 +206,7 @@
                 }"
               >
                 <p class="text-3xl font-black" :style="{ color: 'var(--pss-home-about-stat-number-text, #1A202C)' }">{{ stats.projects }}+</p>
-                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">Projects</p>
+                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">{{ t('public.common.projects') }}</p>
               </div>
               <div 
                 class="p-6 text-center border-[3px] rounded-xl"
@@ -217,7 +217,7 @@
                 }"
               >
                 <p class="text-3xl font-black" :style="{ color: 'var(--pss-home-about-stat-number-text, #1A202C)' }">{{ stats.experience }}+</p>
-                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">Experience</p>
+                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">{{ t('public.common.experience') }}</p>
               </div>
               <div 
                 class="p-6 text-center border-[3px] rounded-xl"
@@ -228,7 +228,7 @@
                 }"
               >
                 <p class="text-3xl font-black" :style="{ color: 'var(--pss-home-about-stat-number-text, #1A202C)' }">{{ stats.certifications }}+</p>
-                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">Certifications</p>
+                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">{{ t('public.common.certifications') }}</p>
               </div>
               <div 
                 class="p-6 text-center border-[3px] rounded-xl"
@@ -239,7 +239,7 @@
                 }"
               >
                 <p class="text-3xl font-black" :style="{ color: 'var(--pss-home-about-stat-number-text, #1A202C)' }">{{ stats.tools }}+</p>
-                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">Technologies</p>
+                <p class="text-sm font-bold uppercase tracking-wide" :style="{ color: 'var(--pss-home-about-stat-label-text, #4A5568)' }">{{ t('public.common.technologies') }}</p>
               </div>
             </div>
           </div>
@@ -257,12 +257,12 @@
                 borderColor: 'var(--pss-home-portfolio-badge-border, #B8C6DB)',
                 color: 'var(--pss-home-portfolio-badge-text, #2C3E50)'
               }"
-            >Portfolio</div>
+            >{{ t('public.common.portfolio') }}</div>
             <h2 
               class="text-3xl font-black" 
               style="font-family: 'Space Grotesk', sans-serif;"
               :style="{ color: 'var(--pss-home-portfolio-header-text, #1A202C)' }"
-            >Featured Projects</h2>
+            >{{ t('public.home.projects.title') }}</h2>
           </div>
 
           <div v-if="loading" class="flex justify-center py-12">
@@ -331,7 +331,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-home-portfolio-btn-shadow, #B8C6DB)'
               }"
             >
-              View All Projects →
+              {{ t('public.home.projects.viewAll') }}
             </NuxtLink>
           </div>
         </div>
@@ -355,12 +355,12 @@
                 borderColor: 'var(--pss-home-cert-badge-border, #B8C6DB)',
                 color: 'var(--pss-home-cert-badge-text, #2C3E50)'
               }"
-            >Credentials</div>
+            >{{ t('public.home.certifications.badge') }}</div>
             <h2 
               class="text-3xl font-black" 
               style="font-family: 'Space Grotesk', sans-serif;"
               :style="{ color: 'var(--pss-home-cert-header-text, #1A202C)' }"
-            >Certifications</h2>
+            >{{ t('public.common.certifications') }}</h2>
           </div>
 
           <div v-if="loading" class="flex justify-center py-12">
@@ -408,7 +408,7 @@
                       boxShadow: '3px 3px 0px 0px var(--pss-home-cert-view-btn-shadow, #B8C6DB)'
                     }"
                   >
-                    View Credential →
+                    {{ t('public.home.certifications.viewCredential') }}
                   </a>
                 </div>
               </div>
@@ -426,7 +426,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-home-cert-all-btn-shadow, #B8C6DB)'
               }"
             >
-              View All Certifications →
+              {{ t('public.home.certifications.viewAll') }}
             </NuxtLink>
           </div>
         </div>
@@ -450,12 +450,12 @@
                 borderColor: 'var(--pss-home-exp-badge-border, #B8C6DB)',
                 color: 'var(--pss-home-exp-badge-text, #2C3E50)'
               }"
-            >Career</div>
+            >{{ t('public.home.experience.badge') }}</div>
             <h2 
               class="text-3xl font-black" 
               style="font-family: 'Space Grotesk', sans-serif;"
               :style="{ color: 'var(--pss-home-exp-header-text, #1A202C)' }"
-            >Experience</h2>
+            >{{ t('public.common.experience') }}</h2>
           </div>
 
           <div v-if="loading" class="flex justify-center py-12">
@@ -490,7 +490,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-home-exp-btn-shadow, #B8C6DB)'
               }"
             >
-              View Full Experience →
+              {{ t('public.home.experience.viewAll') }}
             </NuxtLink>
           </div>
         </div>
@@ -514,12 +514,12 @@
                 borderColor: 'var(--pss-home-tools-badge-border, #B8C6DB)',
                 color: 'var(--pss-home-tools-badge-text, #2C3E50)'
               }"
-            >Tech Stack</div>
+            >{{ t('public.home.tools.badge') }}</div>
             <h2 
               class="text-3xl font-black" 
               style="font-family: 'Space Grotesk', sans-serif;"
               :style="{ color: 'var(--pss-home-tools-header-text, #1A202C)' }"
-            >Tools & Technologies</h2>
+            >{{ t('public.home.tools.title') }}</h2>
           </div>
 
           <div v-if="loading" class="flex justify-center py-12">
@@ -566,7 +566,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-home-tools-btn-shadow, #B8C6DB)'
               }"
             >
-              View All Tools →
+              {{ t('public.home.tools.viewAll') }}
             </NuxtLink>
           </div>
         </div>
@@ -586,12 +586,12 @@
             class="text-3xl sm:text-4xl font-black mb-4" 
             style="font-family: 'Space Grotesk', sans-serif;"
             :style="{ color: 'var(--pss-home-cta-header-text, #1A202C)' }"
-          >Let's work together</h2>
+          >{{ t('public.home.cta.title') }}</h2>
           <p 
             class="mb-8 max-w-xl mx-auto"
             :style="{ color: 'var(--pss-home-cta-content-text, #4A5568)' }"
           >
-            Have a project in mind? I'd love to hear about it. Let's discuss how we can bring your ideas to life.
+            {{ t('public.home.cta.description') }}
           </p>
           <NuxtLink
             to="/contact"
@@ -603,7 +603,7 @@
               boxShadow: '4px 4px 0px 0px var(--pss-home-cta-btn-shadow, #B8C6DB)'
             }"
           >
-            Get in Touch
+            {{ t('public.home.cta.button') }}
           </NuxtLink>
         </div>
       </section>
@@ -616,6 +616,7 @@ import { useLayoutStore } from '~/stores/layout';
 import { usePublicSiteSettingsStore } from '~/stores/publicSiteSettings';
 
 const { apiFetch } = useApiClient();
+const { t } = useT();
 
 const layoutStore = useLayoutStore();
 const pssStore = usePublicSiteSettingsStore();
@@ -707,10 +708,8 @@ const load = async () => {
 
 onMounted(load);
 
-useHead({
-  title: 'Home | Portfolio',
-  meta: [
-    { name: 'description', content: 'Full Stack Developer Portfolio - Building modern web experiences' },
-  ],
-});
+useHead(() => ({
+  title: t('public.home.headTitle'),
+  meta: [{ name: 'description', content: t('public.home.headDesc') }],
+}));
 </script>

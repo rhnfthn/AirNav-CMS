@@ -41,6 +41,17 @@
         </nav>
 
         <div class="flex items-center gap-3">
+          <button
+            type="button"
+            class="pss-mobile-menu-btn p-2 border-2 rounded-lg transition-all text-xs font-black"
+            :style="{ 
+              borderColor: 'var(--pss-section-divider-color, var(--color-border))',
+              color: 'var(--pss-header-text-color, var(--color-on-header))'
+            }"
+            @click="lang.toggle()"
+          >
+            {{ localeLabel }}
+          </button>
           <!-- Mobile menu button -->
           <button
             @click="mobileMenuOpen = !mobileMenuOpen"
@@ -123,11 +134,11 @@
               <div
                 class="text-xs font-bold"
                 :style="{ color: 'var(--pss-footer-copyright-text, color-mix(in srgb, var(--color-on-footer) 75%, transparent 25%))' }"
-              >Build With Neo-Brutalism Style</div>
+              >{{ t('public.footer.slogan') }}</div>
               <div
                 class="text-xs font-medium"
                 :style="{ color: 'var(--pss-footer-copyright-text, color-mix(in srgb, var(--color-on-footer) 75%, transparent 25%))' }"
-              >@{{ year }} Rhn Fthn</div>
+              >{{ t('public.footer.copyright', { year }) }}</div>
             </div>
 
             <div class="flex items-center gap-3">
@@ -169,21 +180,25 @@
 <script setup lang="ts">
 import { useThemeStore } from '~/stores/theme';
 import { usePublicSiteSettingsStore } from '~/stores/publicSiteSettings';
+import { useT } from '~/composables/useT';
 
 const year = new Date().getFullYear();
 const mobileMenuOpen = ref(false);
 const themeStore = useThemeStore();
 const pssStore = usePublicSiteSettingsStore();
+const { t, lang } = useT();
 
-const navLinks = [
-  { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
-  { to: '/projects', label: 'Projects' },
-  { to: '/certifications', label: 'Certifications' },
-  { to: '/experience', label: 'Experience' },
-  { to: '/tools', label: 'Tools' },
-  { to: '/contact', label: 'Contact Me' },
-];
+const localeLabel = computed(() => (lang.locale === 'id' ? 'IN' : 'EN'));
+
+const navLinks = computed(() => [
+  { to: '/', label: t('public.nav.home') },
+  { to: '/about', label: t('public.nav.about') },
+  { to: '/projects', label: t('public.nav.projects') },
+  { to: '/certifications', label: t('public.nav.certifications') },
+  { to: '/experience', label: t('public.nav.experience') },
+  { to: '/tools', label: t('public.nav.tools') },
+  { to: '/contact', label: t('public.nav.contact') },
+]);
 
 // CSS vars for public site - applied only to this layout scope
 const publicSiteCssVars = computed(() => pssStore.cssVars);

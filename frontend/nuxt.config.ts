@@ -1,5 +1,3 @@
-import { fileURLToPath } from 'node:url';
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -10,7 +8,10 @@ export default defineNuxtConfig({
   vite: {
     resolve: {
       alias: {
-        '#app-manifest': fileURLToPath(new URL('./app-manifest.stub.ts', import.meta.url)),
+        // Nuxt imports `#app-manifest` in SSR. On Windows, Node ESM loader does NOT
+        // accept bare absolute paths like `C:\...` as import specifiers; it needs
+        // a `file://` URL. Using a file URL here prevents `ERR_UNSUPPORTED_ESM_URL_SCHEME`.
+        '#app-manifest': new URL('./app-manifest.stub.ts', import.meta.url).href,
       },
     },
   },

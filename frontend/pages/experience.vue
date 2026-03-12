@@ -10,15 +10,15 @@
             borderColor: 'var(--pss-exp-badge-border, #B8C6DB)',
             color: 'var(--pss-exp-badge-text, #2C3E50)'
           }"
-        >Career</div>
+        >{{ t('public.experience.badge') }}</div>
         <h1
           class="text-3xl font-black"
           style="font-family: 'Space Grotesk', sans-serif; color: var(--pss-experience-section-header-text, #1A202C);"
         >
-          Work Experience
+          {{ t('public.experience.title') }}
         </h1>
         <p class="mt-2 max-w-xl mx-auto" :style="{ color: 'var(--pss-experience-section-content-text, #4A5568)' }">
-          My professional journey and the companies I've had the pleasure to work with.
+          {{ t('public.experience.description') }}
         </p>
       </div>
 
@@ -80,7 +80,7 @@
                     color: 'var(--pss-exp-card-badge-text, #2C3E50)'
                   }"
                 >
-                  {{ formatDate(exp.startDate) }} - {{ exp.endDate ? formatDate(exp.endDate) : 'Present' }}
+                  {{ formatDate(exp.startDate) }} - {{ exp.endDate ? formatDate(exp.endDate) : t('public.experience.present') }}
                 </span>
               </div>
               <h3 class="font-black text-lg" :style="{ color: 'var(--pss-exp-card-header-text, #1A202C)' }">{{ exp.position }}</h3>
@@ -98,7 +98,7 @@
 
       <!-- Empty state -->
       <div v-else class="neo-card p-16 text-center">
-        <p class="theme-text-secondary font-bold">No work experience available yet.</p>
+        <p class="theme-text-secondary font-bold">{{ t('public.experience.empty') }}</p>
       </div>
     </div>
   </div>
@@ -106,13 +106,15 @@
 
 <script setup lang="ts">
 const { apiFetch } = useApiClient();
+const { t, lang } = useT();
 
 const loading = ref(true);
 const experiences = ref<any[]>([]);
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  const locale = lang.locale === 'id' ? 'id-ID' : 'en-US';
+  return date.toLocaleDateString(locale, { month: 'short', year: 'numeric' });
 };
 
 onMounted(async () => {
@@ -126,10 +128,8 @@ onMounted(async () => {
   }
 });
 
-useHead({
-  title: 'Experience | Portfolio',
-  meta: [
-    { name: 'description', content: 'My professional work experience' },
-  ],
-});
+useHead(() => ({
+  title: t('public.experience.headTitle'),
+  meta: [{ name: 'description', content: t('public.experience.headDesc') }],
+}));
 </script>

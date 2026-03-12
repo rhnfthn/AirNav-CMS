@@ -2,8 +2,8 @@
   <div>
     <!-- Welcome message -->
     <div class="mb-8">
-      <h1 class="text-2xl font-black theme-text-primary">Welcome back!</h1>
-      <p class="theme-text-secondary font-medium mt-1">Here's an overview of your portfolio content.</p>
+      <h1 class="text-2xl font-black theme-text-primary">{{ t('admin.dashboard.welcome') }}</h1>
+      <p class="theme-text-secondary font-medium mt-1">{{ t('admin.dashboard.overview') }}</p>
     </div>
 
     <!-- Stats Grid -->
@@ -37,7 +37,7 @@
     </div>
 
     <!-- Quick Actions -->
-    <h2 class="text-lg font-black theme-text-secondary mb-4 uppercase tracking-wide">Quick Actions</h2>
+    <h2 class="text-lg font-black theme-text-secondary mb-4 uppercase tracking-wide">{{ t('admin.dashboard.quickActions') }}</h2>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       <NuxtLink
         v-for="action in quickActions"
@@ -63,13 +63,13 @@
 
     <!-- Recent Messages -->
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-black theme-text-secondary uppercase tracking-wide">Recent Messages</h2>
+      <h2 class="text-lg font-black theme-text-secondary uppercase tracking-wide">{{ t('admin.dashboard.recentMessages') }}</h2>
       <NuxtLink
         to="/admin/messages"
         class="text-sm font-bold transition-colors hover:underline"
         style="color: var(--color-text-secondary);"
       >
-        View all &rarr;
+        {{ t('admin.dashboard.viewAll') }} &rarr;
       </NuxtLink>
     </div>
     <div class="neo-card overflow-hidden">
@@ -77,7 +77,7 @@
         <div class="neo-spinner mx-auto"></div>
       </div>
       <div v-else-if="recentMessages.length === 0" class="p-8 text-center">
-        <p class="theme-text-secondary font-bold">No messages yet</p>
+        <p class="theme-text-secondary font-bold">{{ t('admin.dashboard.noMessages') }}</p>
       </div>
       <div v-else>
         <div
@@ -114,6 +114,7 @@
 <script setup lang="ts">
 import { defineComponent, h } from 'vue';
 import { useAuthStore } from '~/stores/auth';
+import { useT } from '~/composables/useT';
 
 definePageMeta({ layout: 'admin', middleware: 'admin-auth' });
 
@@ -124,6 +125,7 @@ useSeoMeta({
 
 const authStore = useAuthStore();
 const { apiFetch } = useApiClient();
+const { t } = useT();
 
 const loading = ref(true);
 const loadingMessages = ref(true);
@@ -308,31 +310,31 @@ const IconEye = defineComponent({
 
 const stats = computed(() => [
   {
-    label: 'Projects',
+    label: t('admin.stats.projects'),
     value: statsData.value.projects,
     icon: IconFolder,
-    badge: 'Total',
+    badge: t('admin.stats.total'),
     badgeStyle: { backgroundColor: 'color-mix(in srgb, var(--bg-main) 88%, var(--color-border) 12%)', color: 'var(--color-text-primary)' },
   },
   {
-    label: 'Certifications',
+    label: t('admin.stats.certifications'),
     value: statsData.value.certifications,
     icon: IconCertificate,
-    badge: 'Total',
+    badge: t('admin.stats.total'),
     badgeStyle: { backgroundColor: 'color-mix(in srgb, var(--bg-main) 88%, var(--color-border) 12%)', color: 'var(--color-text-primary)' },
   },
   {
-    label: 'Experiences',
+    label: t('admin.stats.experiences'),
     value: statsData.value.experiences,
     icon: IconBriefcase,
-    badge: 'Total',
+    badge: t('admin.stats.total'),
     badgeStyle: { backgroundColor: 'color-mix(in srgb, var(--bg-main) 88%, var(--color-border) 12%)', color: 'var(--color-text-primary)' },
   },
   {
-    label: 'Messages',
+    label: t('admin.stats.messages'),
     value: statsData.value.messages,
     icon: IconMail,
-    badge: `${statsData.value.unreadMessages} unread`,
+    badge: `${statsData.value.unreadMessages} ${t('admin.stats.unread')}`,
     badgeStyle: statsData.value.unreadMessages > 0
       ? { backgroundColor: 'color-mix(in srgb, var(--color-button) 35%, var(--bg-main) 65%)', color: 'var(--color-text-primary)' }
       : { backgroundColor: 'color-mix(in srgb, var(--bg-main) 88%, var(--color-border) 12%)', color: 'var(--color-text-primary)' },
@@ -347,9 +349,9 @@ const formatDate = (dateStr: string) => {
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
 
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffMins < 60) return `${diffMins}${t('time.m')} ${t('time.ago')}`;
+  if (diffHours < 24) return `${diffHours}${t('time.h')} ${t('time.ago')}`;
+  if (diffDays < 7) return `${diffDays}${t('time.d')} ${t('time.ago')}`;
   return date.toLocaleDateString();
 };
 
@@ -384,11 +386,11 @@ onMounted(async () => {
   }
 });
 
-const quickActions = [
-  { to: '/admin/projects/new', label: 'New Project', description: 'Create a new project', icon: IconPlus },
-  { to: '/admin/about', label: 'Edit About', description: 'Update your profile', icon: IconPencil },
-  { to: '/', label: 'View Website', description: 'See your public site', icon: IconEye },
-];
+const quickActions = computed(() => [
+  { to: '/admin/projects/new', label: t('admin.action.newProject'), description: t('admin.action.newProject.desc'), icon: IconPlus },
+  { to: '/admin/about', label: t('admin.action.editAbout'), description: t('admin.action.editAbout.desc'), icon: IconPencil },
+  { to: '/', label: t('admin.action.viewWebsite'), description: t('admin.action.viewWebsite.desc'), icon: IconEye },
+]);
 </script>
 
 <style scoped>

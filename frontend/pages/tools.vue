@@ -10,15 +10,15 @@
             borderColor: 'var(--pss-tools-badge-border, #B8C6DB)',
             color: 'var(--pss-tools-badge-text, #2C3E50)'
           }"
-        >Tech Stack</div>
+        >{{ t('public.tools.badge') }}</div>
         <h1
           class="text-3xl font-black"
           style="font-family: 'Space Grotesk', sans-serif; color: var(--pss-tools-header-text, #1A202C);"
         >
-          Tools & Technologies
+          {{ t('public.tools.title') }}
         </h1>
         <p class="mt-2 max-w-xl mx-auto" :style="{ color: 'var(--pss-tools-content-text, #4A5568)' }">
-          The technologies, frameworks, and tools I use to build amazing products.
+          {{ t('public.tools.description') }}
         </p>
       </div>
 
@@ -81,7 +81,7 @@
 
       <!-- Empty state -->
       <div v-else class="neo-card p-16 text-center">
-        <p class="theme-text-secondary font-bold">No tools available yet.</p>
+        <p class="theme-text-secondary font-bold">{{ t('public.tools.empty') }}</p>
       </div>
     </div>
   </div>
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 const { apiFetch } = useApiClient();
+const { t } = useT();
 
 const loading = ref(true);
 const groupedTools = ref<Record<string, any[]>>({});
@@ -113,10 +114,8 @@ onMounted(async () => {
   }
 });
 
-useHead({
-  title: 'Tools & Technologies | Portfolio',
-  meta: [
-    { name: 'description', content: 'Technologies and tools I use' },
-  ],
-});
+useHead(() => ({
+  title: t('public.tools.headTitle'),
+  meta: [{ name: 'description', content: t('public.tools.headDesc') }],
+}));
 </script>

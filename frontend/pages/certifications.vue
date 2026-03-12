@@ -10,10 +10,10 @@
             borderColor: 'var(--pss-cert-badge-border, #B8C6DB)',
             color: 'var(--pss-cert-badge-text, #2C3E50)'
           }"
-        >Achievements</div>
-        <h1 class="text-3xl font-black theme-text-primary" style="font-family: 'Space Grotesk', sans-serif;">Certifications</h1>
+        >{{ t('public.certifications.badge') }}</div>
+        <h1 class="text-3xl font-black theme-text-primary" style="font-family: 'Space Grotesk', sans-serif;">{{ t('public.certifications.title') }}</h1>
         <p class="theme-text-secondary mt-2 max-w-xl mx-auto">
-          Professional certifications and credentials I've earned throughout my career.
+          {{ t('public.certifications.description') }}
         </p>
       </div>
 
@@ -73,7 +73,7 @@
                 '--cert-link-hover-border': 'var(--pss-cert-btn-border, var(--color-button))'
               }"
             >
-              View Credential →
+              {{ t('public.certifications.viewCredential') }}
             </a>
           </div>
         </div>
@@ -81,7 +81,7 @@
 
       <!-- Empty state -->
       <div v-else class="neo-card p-16 text-center">
-        <p class="theme-text-secondary font-bold">No certifications available yet.</p>
+        <p class="theme-text-secondary font-bold">{{ t('public.certifications.empty') }}</p>
       </div>
     </div>
   </div>
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 const { apiFetch } = useApiClient();
+const { t } = useT();
 
 const loading = ref(true);
 const certifications = ref<any[]>([]);
@@ -104,12 +105,10 @@ onMounted(async () => {
   }
 });
 
-useHead({
-  title: 'Certifications | Portfolio',
-  meta: [
-    { name: 'description', content: 'My professional certifications and credentials' },
-  ],
-});
+useHead(() => ({
+  title: t('public.certifications.headTitle'),
+  meta: [{ name: 'description', content: t('public.certifications.headDesc') }],
+}));
 </script>
 
 <style scoped>

@@ -10,7 +10,7 @@
             borderColor: 'var(--pss-about-badge-border, #B8C6DB)',
             color: 'var(--pss-about-badge-text, #2C3E50)'
           }"
-        >About Me</div>
+        >{{ t('public.about.badge') }}</div>
         <h1 class="text-4xl sm:text-5xl font-black leading-tight" style="font-family: 'Space Grotesk', sans-serif;">
           <span
             class="px-2 border-[3px] inline-block -rotate-1"
@@ -21,7 +21,7 @@
               boxShadow: '4px 4px 0px 0px var(--pss-about-title-shadow, var(--color-shadow))'
             }"
           >
-            {{ about?.title || 'Full Stack Developer' }}
+            {{ about?.title || t('public.common.fullStackDeveloper') }}
           </span>
         </h1>
       </div>
@@ -50,7 +50,7 @@
               <img 
                 v-if="about?.photoUrl" 
                 :src="about.photoUrl" 
-                alt="Profile photo"
+                :alt="t('public.about.profilePhotoAlt')"
                 class="w-full h-full object-cover"
               />
               <div v-else class="w-full h-full flex items-center justify-center" style="color: color-mix(in srgb, var(--color-text-secondary) 55%, transparent 45%);">
@@ -63,18 +63,18 @@
               <h3
                 class="font-black text-lg theme-text-primary"
                 :style="{ color: 'var(--pss-about-info-header-text, var(--color-text-primary))' }"
-              >Portfolio Owner</h3>
+              >{{ t('public.about.ownerLabel') }}</h3>
               <p
                 class="text-sm font-bold theme-text-secondary"
                 :style="{ color: 'var(--pss-about-info-content-text, var(--color-text-secondary))' }"
-              >{{ about?.title || 'Full Stack Developer' }}</p>
+              >{{ about?.title || t('public.common.fullStackDeveloper') }}</p>
             </div>
 
             <div v-if="about?.university || about?.major || gpaNumber !== null" class="mt-6 border-t-[3px] pt-5" :style="{ borderColor: 'var(--pss-about-card-border, var(--color-border))' }">
               <p
                 class="text-xs font-black theme-text-secondary uppercase tracking-wider mb-3"
                 :style="{ color: 'var(--pss-about-education-header-text, var(--color-text-secondary))' }"
-              >Education</p>
+              >{{ t('public.about.educationLabel') }}</p>
               <div class="space-y-2">
                 <p
                   v-if="about?.university"
@@ -90,7 +90,7 @@
                   v-if="gpaNumber !== null"
                   class="text-sm font-bold theme-text-primary"
                   :style="{ color: 'var(--pss-about-education-content-text, var(--color-text-primary))' }"
-                >GPA: {{ gpaNumber.toFixed(2) }}</p>
+                >{{ t('public.common.gpa') }}: {{ gpaNumber.toFixed(2) }}</p>
               </div>
             </div>
           </div>
@@ -103,13 +103,13 @@
               class="text-lg leading-relaxed whitespace-pre-line text-justify"
               :style="{ color: 'var(--pss-about-text-color, var(--color-text-secondary))' }"
             >
-              {{ about?.description || 'No description available.' }}
+              {{ about?.description || t('public.about.noDescription') }}
             </p>
           </div>
 
           <!-- Skills Highlight -->
           <div class="mt-12">
-            <h3 class="text-xl font-black theme-text-primary mb-6 uppercase tracking-wide">Skills & Tools</h3>
+            <h3 class="text-xl font-black theme-text-primary mb-6 uppercase tracking-wide">{{ t('public.about.skillsTitle') }}</h3>
             <div v-if="loadingTools" class="flex justify-center py-8">
               <div class="neo-spinner"></div>
             </div>
@@ -155,7 +155,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-about-btn-shadow, #B8C6DB)'
               }"
             >
-              View My Projects
+              {{ t('public.about.viewProjects') }}
             </NuxtLink>
             <NuxtLink 
               to="/experience" 
@@ -167,7 +167,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-about-btn-shadow, #B8C6DB)'
               }"
             >
-              Work Experience
+              {{ t('public.about.workExperience') }}
             </NuxtLink>
             <NuxtLink 
               to="/contact" 
@@ -179,7 +179,7 @@
                 boxShadow: '4px 4px 0px 0px var(--pss-about-btn-shadow, #B8C6DB)'
               }"
             >
-              Contact Me
+              {{ t('public.about.contactMe') }}
             </NuxtLink>
           </div>
         </div>
@@ -190,6 +190,7 @@
 
 <script setup lang="ts">
 const { apiFetch } = useApiClient();
+const { t } = useT();
 
 const loading = ref(true);
 const loadingTools = ref(true);
@@ -219,10 +220,8 @@ onMounted(async () => {
   }
 });
 
-useHead({
-  title: 'About Me | Portfolio',
-  meta: [
-    { name: 'description', content: 'Learn more about me - Full Stack Developer' },
-  ],
-});
+useHead(() => ({
+  title: t('public.about.headTitle'),
+  meta: [{ name: 'description', content: t('public.about.headDesc') }],
+}));
 </script>
