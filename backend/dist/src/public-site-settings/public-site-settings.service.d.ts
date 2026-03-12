@@ -104,8 +104,8 @@ export declare class PublicSiteSettingsService {
         certCardContentText: string;
         certBtnBg: string;
         certBtnText: string;
-        certBtnBorder: string;
         certBtnHoverText: string;
+        certBtnBorder: string;
         experienceSectionHeaderText: string;
         experienceSectionContentText: string;
         expBadgeBg: string;
@@ -381,8 +381,8 @@ export declare class PublicSiteSettingsService {
         certCardContentText: string;
         certBtnBg: string;
         certBtnText: string;
-        certBtnBorder: string;
         certBtnHoverText: string;
+        certBtnBorder: string;
         experienceSectionHeaderText: string;
         experienceSectionContentText: string;
         expBadgeBg: string;
