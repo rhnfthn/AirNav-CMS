@@ -73,7 +73,7 @@ export const messages: Record<'id' | 'en', MessageDict> = {
     'public.common.technologies': 'Teknologi',
 
     'public.home.hero.badge': 'Pengembang Full Stack',
-    'public.home.hero.titlePrefix': 'Membangun pengalaman web modern',
+    'public.home.hero.titlePrefix': 'Membangun web modern',
     'public.home.hero.titleHighlight': 'pengalaman',
     'public.home.hero.description': 'Hai, aku seorang pengembang full stack yang fokus membuat aplikasi web modern. Dengan keahlian frontend dan backend, aku membangun pengalaman digital yang mulus dan menarik untuk mewujudkan ide menjadi nyata.',
     'public.home.hero.viewProjects': 'Lihat Proyek →',
