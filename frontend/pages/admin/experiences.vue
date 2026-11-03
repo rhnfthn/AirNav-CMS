@@ -60,12 +60,20 @@
           <h3 class="text-lg font-black uppercase tracking-wide mb-4">{{ editingId ? 'Edit' : 'Add' }} Experience</h3>
           <form @submit.prevent="saveExp" class="space-y-4">
             <div>
-              <label class="neo-label">Company</label>
+              <label class="neo-label">Company (EN)</label>
               <input v-model="form.company" type="text" class="neo-input" required />
             </div>
             <div>
-              <label class="neo-label">Position</label>
+              <label class="neo-label">Company (ID)</label>
+              <input v-model="form.companyId" type="text" class="neo-input" placeholder="Opsional" />
+            </div>
+            <div>
+              <label class="neo-label">Position (EN)</label>
               <input v-model="form.position" type="text" class="neo-input" required />
+            </div>
+            <div>
+              <label class="neo-label">Position (ID)</label>
+              <input v-model="form.positionId" type="text" class="neo-input" placeholder="Opsional" />
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
@@ -79,8 +87,12 @@
               </div>
             </div>
             <div>
-              <label class="neo-label">Description</label>
+              <label class="neo-label">Description (EN)</label>
               <textarea v-model="form.description" rows="4" class="neo-input resize-none" required></textarea>
+            </div>
+            <div>
+              <label class="neo-label">Description (ID)</label>
+              <textarea v-model="form.descriptionId" rows="4" class="neo-input resize-none" placeholder="Opsional"></textarea>
             </div>
             <div class="flex gap-3 pt-2">
               <button type="button" @click="showModal = false" class="neo-btn-secondary flex-1 font-black">Cancel</button>
@@ -102,6 +114,7 @@ definePageMeta({ layout: 'admin', middleware: 'admin-auth' });
 
 const { apiFetch } = useApiClient();
 const toast = useToastStore();
+const { t } = useT();
 
 const loading = ref(true);
 const saving = ref(false);
@@ -111,10 +124,13 @@ const experiences = ref<any[]>([]);
 
 const form = reactive({
   company: '',
+  companyId: '',
   position: '',
+  positionId: '',
   startDate: '',
   endDate: '',
   description: '',
+  descriptionId: '',
 });
 
 const formatDate = (dateStr: string) => {
@@ -129,10 +145,13 @@ const formatDateForInput = (dateStr: string) => {
 
 const resetForm = () => {
   form.company = '';
+  form.companyId = '';
   form.position = '';
+  form.positionId = '';
   form.startDate = '';
   form.endDate = '';
   form.description = '';
+  form.descriptionId = '';
   editingId.value = null;
 };
 
@@ -140,10 +159,13 @@ const openModal = (exp?: any) => {
   if (exp) {
     editingId.value = exp.id;
     form.company = exp.company;
+    form.companyId = exp.companyId ?? '';
     form.position = exp.position;
+    form.positionId = exp.positionId ?? '';
     form.startDate = formatDateForInput(exp.startDate);
     form.endDate = exp.endDate ? formatDateForInput(exp.endDate) : '';
     form.description = exp.description;
+    form.descriptionId = exp.descriptionId ?? '';
   } else {
     resetForm();
   }

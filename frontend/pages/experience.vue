@@ -83,13 +83,13 @@
                   {{ formatDate(exp.startDate) }} - {{ exp.endDate ? formatDate(exp.endDate) : t('public.experience.present') }}
                 </span>
               </div>
-              <h3 class="font-black text-lg" :style="{ color: 'var(--pss-exp-card-header-text, #1A202C)' }">{{ exp.position }}</h3>
-              <p class="font-bold mb-3" :style="{ color: 'var(--pss-exp-card-sub-header-text, #4A5568)' }">{{ exp.company }}</p>
+              <h3 class="font-black text-lg" :style="{ color: 'var(--pss-exp-card-header-text, #1A202C)' }">{{ localized(exp.position, exp.positionId) }}</h3>
+              <p class="font-bold mb-3" :style="{ color: 'var(--pss-exp-card-sub-header-text, #4A5568)' }">{{ localized(exp.company, exp.companyId) }}</p>
               <p
                 class="text-sm leading-relaxed text-justify"
                 :style="{ color: 'var(--pss-exp-card-content-text, #4A5568)' }"
               >
-                {{ exp.description }}
+                {{ localized(exp.description, exp.descriptionId) }}
               </p>
             </div>
           </div>
@@ -106,7 +106,7 @@
 
 <script setup lang="ts">
 const { apiFetch } = useApiClient();
-const { t, lang } = useT();
+const { t, lang, localized } = useT();
 
 const loading = ref(true);
 const experiences = ref<any[]>([]);

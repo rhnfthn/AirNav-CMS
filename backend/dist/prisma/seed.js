@@ -176,17 +176,23 @@ async function main() {
     const experiences = [
         {
             company: 'Tech Company A',
+            companyId: 'Perusahaan Tech A',
             position: 'Senior Full Stack Developer',
+            positionId: 'Pengembang Full Stack Senior',
             startDate: new Date('2023-01-01'),
             endDate: null,
             description: 'Leading development of cloud-native applications and mentoring junior developers.',
+            descriptionId: 'Memimpin pengembangan aplikasi cloud-native dan membimbing pengembang junior.',
         },
         {
             company: 'Startup B',
+            companyId: 'Startup B',
             position: 'Full Stack Developer',
+            positionId: 'Pengembang Full Stack',
             startDate: new Date('2021-06-01'),
             endDate: new Date('2022-12-31'),
             description: 'Built and maintained multiple web applications using modern JavaScript frameworks.',
+            descriptionId: 'Membangun dan memelihara berbagai aplikasi web menggunakan framework JavaScript modern.',
         },
     ];
     await prisma.experience.deleteMany();

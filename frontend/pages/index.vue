@@ -46,8 +46,22 @@
                 style="font-family: 'Space Grotesk', sans-serif;"
                 :style="{ color: 'var(--pss-home-hero-header-text, #1A202C)' }"
               >
-                {{ t('public.home.hero.titlePrefix') }}
+                {{ t('public.home.hero.titlePrefix') }}<br v-if="t('public.home.hero.titleLine2')">
+                <span v-if="t('public.home.hero.titleLine2')" class="whitespace-nowrap">{{ t('public.home.hero.titleLine2') }}
+                  <span
+                    class="px-2 border-[3px] inline-block -rotate-1"
+                    :style="{
+                      backgroundColor: 'var(--pss-home-hero-exp-badge-bg, #6FA8DC)',
+                      borderColor: 'var(--pss-home-hero-exp-badge-border, #B8C6DB)',
+                      color: 'var(--pss-home-hero-exp-badge-text, #FFFFFF)',
+                      boxShadow: '4px 4px 0px 0px var(--pss-home-hero-exp-badge-shadow, #B8C6DB)'
+                    }"
+                  >
+                    {{ t('public.home.hero.titleHighlight') }}
+                  </span>
+                </span>
                 <span
+                  v-else
                   class="px-2 border-[3px] inline-block -rotate-1"
                   :style="{
                     backgroundColor: 'var(--pss-home-hero-exp-badge-bg, #6FA8DC)',
@@ -473,9 +487,9 @@
                 boxShadow: '6px 6px 0px 0px var(--pss-home-exp-card-shadow, #B8C6DB)'
               }"
             >
-              <h3 class="font-black mb-2" :style="{ color: 'var(--pss-home-exp-card-header-text, #1A202C)' }">{{ exp.position }}</h3>
-              <p class="text-sm font-bold mb-3" :style="{ color: 'var(--pss-home-exp-card-content-text, #4A5568)' }">{{ exp.company }}</p>
-              <p class="text-sm line-clamp-3" :style="{ color: 'var(--pss-home-exp-card-content-text, #4A5568)' }">{{ exp.description }}</p>
+              <h3 class="font-black mb-2" :style="{ color: 'var(--pss-home-exp-card-header-text, #1A202C)' }">{{ localized(exp.position, exp.positionId) }}</h3>
+              <p class="text-sm font-bold mb-3" :style="{ color: 'var(--pss-home-exp-card-content-text, #4A5568)' }">{{ localized(exp.company, exp.companyId) }}</p>
+              <p class="text-sm line-clamp-3" :style="{ color: 'var(--pss-home-exp-card-content-text, #4A5568)' }">{{ localized(exp.description, exp.descriptionId) }}</p>
             </div>
           </div>
 
@@ -616,7 +630,7 @@ import { useLayoutStore } from '~/stores/layout';
 import { usePublicSiteSettingsStore } from '~/stores/publicSiteSettings';
 
 const { apiFetch } = useApiClient();
-const { t } = useT();
+const { t, localized } = useT();
 
 const layoutStore = useLayoutStore();
 const pssStore = usePublicSiteSettingsStore();

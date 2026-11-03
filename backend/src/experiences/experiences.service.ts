@@ -25,10 +25,13 @@ export class ExperiencesService {
     return this.prisma.experience.create({
       data: {
         company: dto.company,
+        companyId: dto.companyId,
         position: dto.position,
+        positionId: dto.positionId,
         startDate: new Date(dto.startDate),
         endDate: dto.endDate ? new Date(dto.endDate) : null,
         description: dto.description,
+        descriptionId: dto.descriptionId,
       },
     });
   }

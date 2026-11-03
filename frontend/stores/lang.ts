@@ -6,7 +6,7 @@ const COOKIE_NAME = 'airnav_locale';
 
 export const useLangStore = defineStore('lang', {
   state: () => ({
-    locale: 'id' as AppLocale,
+    locale: 'en' as AppLocale,
     ready: false,
   }),
 
@@ -14,12 +14,12 @@ export const useLangStore = defineStore('lang', {
     initFromCookie() {
       // Nuxt composables are available inside store actions.
       const cookie = useCookie<AppLocale>(COOKIE_NAME, {
-        default: () => 'id',
+        default: () => 'en',
         sameSite: 'lax',
         path: '/',
       });
 
-      const value = cookie.value === 'en' ? 'en' : 'id';
+      const value = cookie.value === 'id' ? 'id' : 'en';
       this.locale = value;
       this.ready = true;
     },
@@ -29,7 +29,7 @@ export const useLangStore = defineStore('lang', {
       this.locale = next;
 
       const cookie = useCookie<AppLocale>(COOKIE_NAME, {
-        default: () => 'id',
+        default: () => 'en',
         sameSite: 'lax',
         path: '/',
       });

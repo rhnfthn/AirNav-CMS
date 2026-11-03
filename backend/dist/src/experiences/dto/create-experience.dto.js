@@ -13,10 +13,13 @@ exports.CreateExperienceDto = void 0;
 const class_validator_1 = require("class-validator");
 class CreateExperienceDto {
     company;
+    companyId;
     position;
+    positionId;
     startDate;
     endDate;
     description;
+    descriptionId;
 }
 exports.CreateExperienceDto = CreateExperienceDto;
 __decorate([
@@ -24,9 +27,19 @@ __decorate([
     __metadata("design:type", String)
 ], CreateExperienceDto.prototype, "company", void 0);
 __decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateExperienceDto.prototype, "companyId", void 0);
+__decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateExperienceDto.prototype, "position", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateExperienceDto.prototype, "positionId", void 0);
 __decorate([
     (0, class_validator_1.IsDateString)(),
     __metadata("design:type", String)
@@ -40,4 +53,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateExperienceDto.prototype, "description", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], CreateExperienceDto.prototype, "descriptionId", void 0);
 //# sourceMappingURL=create-experience.dto.js.map

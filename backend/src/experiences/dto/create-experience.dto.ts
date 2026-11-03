@@ -4,8 +4,16 @@ export class CreateExperienceDto {
   @IsString()
   company: string;
 
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
   @IsString()
   position: string;
+
+  @IsOptional()
+  @IsString()
+  positionId?: string;
 
   @IsDateString()
   startDate: string;
@@ -16,4 +24,8 @@ export class CreateExperienceDto {
 
   @IsString()
   description: string;
+
+  @IsOptional()
+  @IsString()
+  descriptionId?: string;
 }

@@ -24,5 +24,10 @@ export const useT = () => {
 
   const locale = computed(() => lang.locale);
 
-  return { t, locale, lang };
+  const localized = (en: string | null | undefined, id: string | null | undefined) => {
+    if (lang.locale === 'id' && id) return id;
+    return en ?? id ?? '';
+  };
+
+  return { t, locale, lang, localized };
 };

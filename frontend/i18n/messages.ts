@@ -73,8 +73,9 @@ export const messages: Record<'id' | 'en', MessageDict> = {
     'public.common.technologies': 'Teknologi',
 
     'public.home.hero.badge': 'Pengembang Full Stack',
-    'public.home.hero.titlePrefix': 'Membangun web modern',
-    'public.home.hero.titleHighlight': 'pengalaman',
+    'public.home.hero.titlePrefix': 'Membangun website',
+    'public.home.hero.titleLine2': '',
+    'public.home.hero.titleHighlight': 'modern',
     'public.home.hero.description': 'Hai, aku seorang pengembang full stack yang fokus membuat aplikasi web modern. Dengan keahlian frontend dan backend, aku membangun pengalaman digital yang mulus dan menarik untuk mewujudkan ide menjadi nyata.',
     'public.home.hero.viewProjects': 'Lihat Proyek →',
     'public.home.hero.anotherDesign': 'Desain Lain',
@@ -267,8 +268,9 @@ export const messages: Record<'id' | 'en', MessageDict> = {
     'public.common.technologies': 'Technologies',
 
     'public.home.hero.badge': 'Full Stack Developer',
-    'public.home.hero.titlePrefix': 'Building modern web',
-    'public.home.hero.titleHighlight': 'experiences',
+    'public.home.hero.titlePrefix': 'Building',
+    'public.home.hero.titleLine2': 'a modern',
+    'public.home.hero.titleHighlight': 'website',
     'public.home.hero.description': "Hi, I'm a passionate full stack developer specializing in crafting modern web applications. With expertise in both frontend and backend technologies, I create seamless and engaging digital experiences that bring ideas to life.",
     'public.home.hero.viewProjects': 'View Projects →',
     'public.home.hero.anotherDesign': 'Another Design',

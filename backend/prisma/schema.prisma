@@ -70,10 +70,13 @@ model Certification {
 model Experience {
   id          String    @id @default(uuid())
   company     String
+  companyId   String?
   position    String
+  positionId  String?
   startDate   DateTime
   endDate     DateTime?
   description String    @db.Text
+  descriptionId String? @db.Text
   createdAt   DateTime  @default(now())
 
   @@index([startDate])
